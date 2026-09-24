@@ -3,17 +3,14 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Dashboards
-import AdminDashboard from './pages/dashboards/AdminDashboard';
-import ParentDashboard from './pages/dashboards/ParentDashboard';
-import CoachDashboard from './pages/dashboards/CoachDashboard';
-import DriverDashboard from './pages/dashboards/DriverDashboard';
+// Dashboards & Pages (موجودة مباشرة داخل pages)
+import AdminDashboard from './pages/AdminDashboard';
+import ParentDashboard from './pages/ParentDashboard';
+import CoachDashboard from './pages/CoachDashboard';
+import DriverDashboard from './pages/DriverDashboard';
+import RegisterPlayer from './pages/RegisterPlayer';
+import Attendance from './pages/Attendance';
 
-// Parent Pages
-import RegisterPlayer from './pages/parent/RegisterPlayer';
-
-// Coach Pages
-import Attendance from './pages/coach/Attendance';
 
 export default function App() {
     return (

@@ -1,79 +1,73 @@
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 export default function Attendance() {
+    const { user, logout } = useAuth();
     const [ageGroups, setAgeGroups] = useState([]);
-    const [selectedAgeGroup, setSelectedAgeGroup] = useState('');
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [selectedGroup, setSelectedGroup] = useState('');
     const [players, setPlayers] = useState([]);
     const [attendanceData, setAttendanceData] = useState({});
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [message, setMessage] = useState({ type: '', text: '' });
 
     useEffect(() => {
-        api.get('/age-groups')
-            .then((res) => setAgeGroups(res.data))
+        // Fetch age groups for the coach
+        api.get('/coach/age-groups')
+            .then((res) => {
+                setAgeGroups(res.data);
+                if (res.data.length > 0) {
+                    setSelectedGroup(res.data[0].id);
+                }
+            })
             .catch(() => {});
     }, []);
 
     useEffect(() => {
-        if (!selectedAgeGroup) {
-            setPlayers([]);
-            return;
-        }
+        if (!selectedGroup) return;
 
         setLoading(true);
-        api.get(`/coach/players?age_group_id=${selectedAgeGroup}&date=${date}`)
+        api.get(`/coach/age-groups/${selectedGroup}/players`)
             .then((res) => {
                 setPlayers(res.data);
-                const initialStatus = {};
-                res.data.forEach((player) => {
-                    initialStatus[player.id] = {
-                        status: player.attendance_status || 'present',
-                        evaluation_notes: player.evaluation_notes || '',
-                        performance_score: player.performance_score || 5,
+                const initialData = {};
+                res.data.forEach((p) => {
+                    initialData[p.id] = {
+                        status: p.today_attendance?.status || 'present',
+                        rating: p.today_attendance?.rating || 5,
+                        notes: p.today_attendance?.notes || '',
                     };
                 });
-                setAttendanceData(initialStatus);
+                setAttendanceData(initialData);
             })
-            .catch(() => setPlayers([]))
+            .catch(() => {})
             .finally(() => setLoading(false));
-    }, [selectedAgeGroup, date]);
+    }, [selectedGroup]);
 
-    const handleStatusChange = (playerId, status) => {
+    const handleFieldChange = (playerId, field, value) => {
         setAttendanceData((prev) => ({
             ...prev,
-            [playerId]: { ...prev[playerId], status },
-        }));
-    };
-
-    const handleDataChange = (playerId, field, value) => {
-        setAttendanceData((prev) => ({
-            ...prev,
-            [playerId]: { ...prev[playerId], [field]: value },
+            [playerId]: {
+                ...prev[playerId],
+                [field]: value,
+            },
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
-        setMessage({ type: '', text: '' });
-
-        const payload = {
-            date,
-            age_group_id: selectedAgeGroup,
-            records: Object.keys(attendanceData).map((playerId) => ({
-                player_id: playerId,
-                ...attendanceData[playerId],
-            })),
-        };
-
         try {
-            await api.post('/coach/attendance', payload);
-            setMessage({ type: 'success', text: 'Attendance and evaluations saved successfully!' });
+            await api.post('/coach/attendance', {
+                age_group_id: selectedGroup,
+                records: Object.keys(attendanceData).map((id) => ({
+                    player_id: id,
+                    ...attendanceData[id],
+                })),
+            });
+            alert('Attendance and evaluations saved successfully!');
         } catch (err) {
-            setMessage({ type: 'error', text: err.response?.data?.message || 'Failed to save attendance.' });
+            alert('Failed to save attendance records.');
         } finally {
             setSaving(false);
         }
@@ -81,113 +75,92 @@ export default function Attendance() {
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Session Attendance & Performance</h2>
-
-                {message.text && (
-                    <div className={`p-4 rounded mb-4 text-sm font-medium ${
-                        message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}>
-                        {message.text}
-                    </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="max-w-5xl mx-auto space-y-6">
+                {/* Header */}
+                <div className="bg-white rounded-lg shadow p-6 flex justify-between items-center">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Select Date</label>
-                        <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        />
+                        <h1 className="text-2xl font-bold text-gray-800">Attendance & Evaluation</h1>
+                        <p className="text-gray-600">Coach: {user?.name}</p>
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Select Age Group</label>
-                        <select
-                            value={selectedAgeGroup}
-                            onChange={(e) => setSelectedAgeGroup(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        >
-                            <option value="">-- Choose Age Group --</option>
-                            {ageGroups.map((group) => (
-                                <option key={group.id} value={group.id}>
-                                    {group.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <button
+                        onClick={logout}
+                        className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded"
+                    >
+                        Logout
+                    </button>
                 </div>
 
+                {/* Group Selector */}
+                <div className="bg-white rounded-lg shadow p-6">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Select Age Group:</label>
+                    <select
+                        value={selectedGroup}
+                        onChange={(e) => setSelectedGroup(e.target.value)}
+                        className="w-full md:w-1/3 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    >
+                        {ageGroups.map((group) => (
+                            <option key={group.id} value={group.id}>
+                                {group.name} ({group.min_age}-{group.max_age} YRS)
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Player List Table */}
                 {loading ? (
-                    <p className="text-center py-8 text-gray-500">Loading players list...</p>
-                ) : !selectedAgeGroup ? (
-                    <p className="text-center py-8 text-gray-400">Please select an age group to record attendance.</p>
+                    <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                        Loading roster...
+                    </div>
                 ) : players.length === 0 ? (
-                    <p className="text-center py-8 text-gray-500">No players registered in this age group.</p>
+                    <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                        No players found in this age group.
+                    </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="bg-gray-50 border-b text-gray-600 text-sm">
-                                        <th className="py-3 px-4">#</th>
+                                    <tr className="bg-gray-100 border-b text-gray-700 text-sm">
                                         <th className="py-3 px-4">Player Name</th>
-                                        <th className="py-3 px-4">Status</th>
-                                        <th className="py-3 px-4">Performance (1-10)</th>
-                                        <th className="py-3 px-4">Coach Notes</th>
+                                        <th className="py-3 px-4">Jersey #</th>
+                                        <th className="py-3 px-4">Attendance</th>
+                                        <th className="py-3 px-4">Rating (1-10)</th>
+                                        <th className="py-3 px-4">Notes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {players.map((player) => (
                                         <tr key={player.id} className="border-b hover:bg-gray-50">
-                                            <td className="py-3 px-4 font-bold text-gray-700">#{player.jersey_number}</td>
-                                            <td className="py-3 px-4 font-semibold text-gray-800">{player.name}</td>
+                                            <td className="py-3 px-4 font-bold text-gray-800">{player.name}</td>
+                                            <td className="py-3 px-4 font-mono text-gray-600">#{player.jersey_number}</td>
                                             <td className="py-3 px-4">
-                                                <div className="flex space-x-2">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleStatusChange(player.id, 'present')}
-                                                        className={`px-3 py-1 rounded text-xs font-bold ${
-                                                            attendanceData[player.id]?.status === 'present'
-                                                                ? 'bg-green-600 text-white'
-                                                                : 'bg-gray-200 text-gray-700'
-                                                        }`}
-                                                    >
-                                                        Present
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleStatusChange(player.id, 'absent')}
-                                                        className={`px-3 py-1 rounded text-xs font-bold ${
-                                                            attendanceData[player.id]?.status === 'absent'
-                                                                ? 'bg-red-600 text-white'
-                                                                : 'bg-gray-200 text-gray-700'
-                                                        }`}
-                                                    >
-                                                        Absent
-                                                    </button>
-                                                </div>
+                                                <select
+                                                    value={attendanceData[player.id]?.status || 'present'}
+                                                    onChange={(e) => handleFieldChange(player.id, 'status', e.target.value)}
+                                                    className="px-2 py-1 border rounded text-sm"
+                                                >
+                                                    <option value="present">Present ✅</option>
+                                                    <option value="absent">Absent ❌</option>
+                                                    <option value="excused">Excused 🟡</option>
+                                                </select>
                                             </td>
                                             <td className="py-3 px-4">
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     max="10"
-                                                    value={attendanceData[player.id]?.performance_score || 5}
-                                                    onChange={(e) => handleDataChange(player.id, 'performance_score', e.target.value)}
-                                                    className="w-16 px-2 py-1 border rounded text-center"
-                                                    disabled={attendanceData[player.id]?.status === 'absent'}
+                                                    value={attendanceData[player.id]?.rating || 5}
+                                                    onChange={(e) => handleFieldChange(player.id, 'rating', Number(e.target.value))}
+                                                    className="w-16 px-2 py-1 border rounded text-sm text-center"
                                                 />
                                             </td>
                                             <td className="py-3 px-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="e.g. Great passing skills"
-                                                    value={attendanceData[player.id]?.evaluation_notes || ''}
-                                                    onChange={(e) => handleDataChange(player.id, 'evaluation_notes', e.target.value)}
+                                                    placeholder="Session feedback..."
+                                                    value={attendanceData[player.id]?.notes || ''}
+                                                    onChange={(e) => handleFieldChange(player.id, 'notes', e.target.value)}
                                                     className="w-full px-2 py-1 border rounded text-sm"
-                                                    disabled={attendanceData[player.id]?.status === 'absent'}
                                                 />
                                             </td>
                                         </tr>
@@ -196,13 +169,13 @@ export default function Attendance() {
                             </table>
                         </div>
 
-                        <div className="flex justify-end pt-4">
+                        <div className="flex justify-end">
                             <button
                                 type="submit"
                                 disabled={saving}
                                 className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition disabled:opacity-50"
                             >
-                                {saving ? 'Saving...' : 'Save Attendance & Reviews'}
+                                {saving ? 'Saving...' : 'Save Attendance & Ratings'}
                             </button>
                         </div>
                     </form>

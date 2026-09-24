@@ -1,0 +1,65 @@
+/* Auth.css - تنسيق العناصر دون تعديل كود الصفحة */
+
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* تنسيق الحاوية الرئيسية */
+div {
+  box-sizing: border-box;
+}
+
+/* تحسين شكل حقول المدخلات */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* تحسين شكل الأزرار */
+button[type="submit"],
+button {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover,
+button:hover {
+  background-color: #059669;
+}
+
+/* تحسين شكل الروابط */
+a {
+  color: #34d399;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
