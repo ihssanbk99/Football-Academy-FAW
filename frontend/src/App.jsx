@@ -1,63 +1,77 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './layouts/DashboardLayout';
+import { useAuth } from './context/AuthContext';
 
-// Dashboards & Pages (موجودة مباشرة داخل pages)
-import AdminDashboard from './pages/AdminDashboard';
-import ParentDashboard from './pages/ParentDashboard';
-import CoachDashboard from './pages/CoachDashboard';
-import DriverDashboard from './pages/DriverDashboard';
-import RegisterPlayer from './pages/RegisterPlayer';
-import Attendance from './pages/Attendance';
+function ProtectedRoute({ children, roles }) {
+    const { user, loading } = useAuth();
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
+    if (roles && !roles.includes(user.role)) {
+        return <Navigate to={`/${user.role}/dashboard`} replace />;
+    }
+
+    return children;
+}
+
+function DashboardHome() {
+    const { user } = useAuth();
+
+    return (
+        <div>
+            <h1>Welcome, {user?.name}</h1>
+            <p>Your {user?.role} dashboard is ready.</p>
+        </div>
+    );
+}
 
 export default function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Navigate to="/login" replace />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+        <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
 
-                {/* Admin Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-                {/* Parent Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['parent']} />}>
-                    <Route path="/parent/dashboard" element={<ParentDashboard />} />
-                    <Route path="/parent/register-player" element={<RegisterPlayer />} />
-                </Route>
+            <Route
+                element={
+                    <ProtectedRoute roles={['admin']}>
+                        <DashboardLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/admin/dashboard" element={<DashboardHome />} />
+            </Route>
 
-                {/* Coach Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['coach']} />}>
-                    <Route path="/coach/dashboard" element={<CoachDashboard />} />
-                    <Route path="/coach/attendance" element={<Attendance />} />
-                </Route>
+            <Route
+                element={
+                    <ProtectedRoute roles={['parent']}>
+                        <DashboardLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/parent/dashboard" element={<DashboardHome />} />
+            </Route>
 
-                {/* Driver Protected Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['driver']} />}>
-                    <Route path="/driver/dashboard" element={<DriverDashboard />} />
-                </Route>
+            <Route
+                element={
+                    <ProtectedRoute roles={['coach']}>
+                        <DashboardLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/coach/dashboard" element={<DashboardHome />} />
+            </Route>
 
-                {/* Unauthorized Access Route */}
-                <Route
-                    path="/unauthorized"
-                    element={
-                        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                            <h1 className="text-xl font-bold text-red-600">
-                                403 - Unauthorized Access
-                            </h1>
-                        </div>
-                    }
-                />
-
-                {/* Fallback Route */}
-                <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-        </BrowserRouter>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
     );
 }
