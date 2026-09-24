@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PlayerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    Route::middleware('role:parent')->get('/parent-test', function (Request $request) {
-        return response()->json([
-            'message' => 'Parent access granted',
-            'user' => $request->user(),
-        ]);
+    Route::middleware('role:parent')->group(function () {
+        Route::apiResource('players', PlayerController::class);
     });
 
     Route::middleware('role:admin')->get('/admin-test', function (Request $request) {
