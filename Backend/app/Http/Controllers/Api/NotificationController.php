@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -56,6 +57,77 @@ class NotificationController extends Controller
 
         return response()->json([
             'message' => 'All notifications marked as read',
+        ]);
+    }
+
+    public function adminIndex()
+    {
+        $notifications = Notification::with([
+            'user:id,name,email,role',
+        ])
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'notifications' => $notifications,
+        ]);
+    }
+
+    public function adminParents()
+    {
+        $parents = User::where('role', 'parent')
+            ->withCount('players')
+            ->with([
+                'players:id,parent_id,first_name,last_name,registration_status',
+            ])
+            ->select('id', 'name', 'email', 'created_at')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'parents' => $parents,
+        ]);
+    }
+
+    public function adminStore(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string'],
+            'type' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $user = User::findOrFail($validated['user_id']);
+
+        abort_unless(
+            $user->role === 'parent',
+            422,
+            'Notifications can only be sent to parents.'
+        );
+
+        $notification = Notification::create([
+            'user_id' => $validated['user_id'],
+            'title' => $validated['title'],
+            'message' => $validated['message'],
+            'type' => $validated['type'] ?? 'general',
+            'is_read' => false,
+        ]);
+
+        return response()->json([
+            'message' => 'Notification sent successfully',
+            'notification' => $notification->load([
+                'user:id,name,email,role',
+            ]),
+        ], 201);
+    }
+
+    public function adminDestroy(Notification $notification)
+    {
+        $notification->delete();
+
+        return response()->json([
+            'message' => 'Notification deleted successfully',
         ]);
     }
 

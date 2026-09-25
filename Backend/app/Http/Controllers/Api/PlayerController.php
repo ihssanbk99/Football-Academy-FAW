@@ -20,6 +20,23 @@ class PlayerController extends Controller
         ]);
     }
 
+    public function adminIndex()
+    {
+        $players = Player::with([
+            'parent:id,name,email',
+            'academy:id,name',
+            'branch:id,name',
+            'ageGroup:id,name',
+            'coach:id,full_name',
+        ])
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'players' => $players,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -75,7 +92,6 @@ class PlayerController extends Controller
             'level' => ['nullable', 'in:beginner,intermediate,advanced'],
             'phone' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
-            'city' => ['nullable', 'string', 'max:255'],
         ]);
 
         $player->update($validated);

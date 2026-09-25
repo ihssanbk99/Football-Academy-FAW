@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -20,6 +19,7 @@ export default function DashboardLayout() {
             { label: 'Age Groups', path: '/admin/age-groups', icon: '◫' },
             { label: 'Training', path: '/admin/training', icon: '▣' },
             { label: 'Payments', path: '/admin/payments', icon: '$' },
+            { label: 'Offers', path: '/admin/offers', icon: '%' },
             { label: 'Notifications', path: '/admin/notifications', icon: '◌' },
         ],
         parent: [
@@ -27,6 +27,7 @@ export default function DashboardLayout() {
             { label: 'My Players', path: '/parent/players', icon: '⚽' },
             { label: 'Training', path: '/parent/training', icon: '▣' },
             { label: 'Payments', path: '/parent/payments', icon: '$' },
+            { label: 'Offers', path: '/parent/offers', icon: '%' },
             { label: 'Notifications', path: '/parent/notifications', icon: '◌' },
         ],
         coach: [
@@ -50,7 +51,6 @@ export default function DashboardLayout() {
             <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="dashboard-brand">
                     <div className="dashboard-brand-mark">⚽</div>
-
                     <div>
                         <strong>FAW</strong>
                         <span>Football Academy</span>
@@ -75,7 +75,6 @@ export default function DashboardLayout() {
                             <span className="dashboard-nav-icon">
                                 {item.icon}
                             </span>
-
                             <span>{item.label}</span>
                         </NavLink>
                     ))}

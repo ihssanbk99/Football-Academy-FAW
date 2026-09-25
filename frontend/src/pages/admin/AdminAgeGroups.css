@@ -1,0 +1,283 @@
+.admin-age-groups-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.admin-age-groups-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 34px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #123c2f, #1d5a45);
+    color: #fff;
+    margin-bottom: 24px;
+}
+
+.admin-age-groups-hero span {
+    display: block;
+    margin-bottom: 10px;
+    color: #d8b56a;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.admin-age-groups-hero h1 {
+    margin: 0 0 8px;
+    font-size: 38px;
+}
+
+.admin-age-groups-hero p {
+    margin: 0;
+    color: #dce9e3;
+    font-size: 15px;
+}
+
+.admin-age-groups-hero-icon {
+    width: 78px;
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(216, 181, 106, 0.5);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d8b56a;
+    font-size: 35px;
+}
+
+.admin-age-groups-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.admin-age-groups-summary-card {
+    padding: 24px;
+    border: 1px solid #e8e5dc;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
+}
+
+.admin-age-groups-summary-card span {
+    display: block;
+    margin-bottom: 10px;
+    color: #777;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.admin-age-groups-summary-card strong {
+    color: #123c2f;
+    font-size: 32px;
+}
+
+.admin-age-groups-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.admin-age-group-card {
+    padding: 25px;
+    border: 1px solid #e8e5dc;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-age-group-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(18, 60, 47, 0.1);
+}
+
+.admin-age-group-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.admin-age-group-number {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #e6eee9;
+    color: #123c2f;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.admin-age-group-status {
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.admin-age-group-status.active {
+    background: #e4f3e9;
+    color: #287043;
+}
+
+.admin-age-group-status.inactive {
+    background: #f1e7e7;
+    color: #8d4848;
+}
+
+.admin-age-group-card h2 {
+    margin: 0 0 18px;
+    color: #123c2f;
+    font-size: 23px;
+}
+
+.admin-age-group-range {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.admin-age-group-range strong {
+    color: #a37b30;
+    font-size: 27px;
+}
+
+.admin-age-group-range span {
+    color: #8b918e;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-age-group-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.admin-age-group-info div {
+    padding: 13px;
+    border-radius: 12px;
+    background: #faf9f5;
+}
+
+.admin-age-group-info span {
+    display: block;
+    margin-bottom: 6px;
+    color: #8b918e;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-age-group-info strong {
+    display: block;
+    color: #35443e;
+    font-size: 12px;
+}
+
+.admin-age-group-description {
+    margin: 16px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid #eeeae2;
+    color: #727a75;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.admin-age-groups-state {
+    padding: 70px 25px;
+    border: 1px solid #e8e5dc;
+    border-radius: 22px;
+    background: #fff;
+    text-align: center;
+}
+
+.admin-age-groups-state h2 {
+    margin: 15px 0 8px;
+    color: #123c2f;
+    font-size: 21px;
+}
+
+.admin-age-groups-state p {
+    margin: 0;
+    color: #858b87;
+    font-size: 14px;
+}
+
+.admin-age-groups-state-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f3eee2;
+    color: #a37b30;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.admin-age-groups-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    border: 4px solid #e8e5dc;
+    border-top-color: #123c2f;
+    border-radius: 50%;
+    animation: adminAgeGroupsSpin 0.8s linear infinite;
+}
+
+@keyframes adminAgeGroupsSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 1050px) {
+    .admin-age-groups-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .admin-age-groups-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-age-groups-hero {
+        padding: 26px;
+    }
+
+    .admin-age-groups-hero h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 650px) {
+    .admin-age-groups-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-age-groups-hero {
+        padding: 22px;
+        border-radius: 18px;
+    }
+
+    .admin-age-groups-hero-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 27px;
+    }
+}

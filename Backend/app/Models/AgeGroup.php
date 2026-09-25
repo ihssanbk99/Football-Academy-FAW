@@ -20,12 +20,6 @@ class AgeGroup extends Model
         'is_active',
     ];
 
-    protected $casts = [
-        'min_age' => 'integer',
-        'max_age' => 'integer',
-        'is_active' => 'boolean',
-    ];
-
     public function academy(): BelongsTo
     {
         return $this->belongsTo(Academy::class);
