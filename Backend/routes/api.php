@@ -48,8 +48,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/players', [PlayerController::class, 'adminIndex']);
         Route::get('/admin/parents', [NotificationController::class, 'adminParents']);
         Route::get('/admin/coaches', [CoachController::class, 'adminIndex']);
+        Route::post('/admin/coaches', [CoachController::class, 'adminStore']);
+        Route::patch('/admin/coaches/{coach}', [CoachController::class, 'adminUpdate']);
+        Route::delete('/admin/coaches/{coach}', [CoachController::class, 'adminDestroy']);
+
         Route::get('/admin/age-groups', [AgeGroupController::class, 'adminIndex']);
+
         Route::get('/admin/training', [TrainingSessionController::class, 'adminIndex']);
+        Route::post('/admin/training', [TrainingSessionController::class, 'adminStore']);
+        Route::patch('/admin/training/{trainingSession}', [TrainingSessionController::class, 'adminUpdate']);
+        Route::delete('/admin/training/{trainingSession}', [TrainingSessionController::class, 'adminDestroy']);
+
         Route::get('/admin/payments', [PaymentController::class, 'adminIndex']);
 
         Route::get('/admin/offers', [OfferController::class, 'adminIndex']);

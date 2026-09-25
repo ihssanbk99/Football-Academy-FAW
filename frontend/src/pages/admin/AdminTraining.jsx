@@ -2,19 +2,50 @@ import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import './AdminTraining.css';
 
-export default function AdminTraining() {
+const ACADEMY_ID = 1;
+
+const emptyForm = {
+    title: '',
+    session_date: '',
+    start_time: '',
+    end_time: '',
+    age_group_id: '',
+    coach_id: '',
+    field_name: '',
+    training_type: 'regular',
+    notes: '',
+    is_active: true,
+};
+
+function AdminTraining() {
     const [sessions, setSessions] = useState([]);
+    const [coaches, setCoaches] = useState([]);
+    const [ageGroups, setAgeGroups] = useState([]);
+    const [form, setForm] = useState(emptyForm);
+    const [editingId, setEditingId] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
 
-    const fetchSessions = async () => {
+    const fetchData = async () => {
         try {
-            const response = await api.get('/admin/training');
-            setSessions(response.data.training_sessions || []);
+            setLoading(true);
+
+            const [trainingResponse, coachesResponse, ageGroupsResponse] =
+                await Promise.all([
+                    api.get('/admin/training'),
+                    api.get('/admin/coaches'),
+                    api.get('/admin/age-groups'),
+                ]);
+
+            setSessions(trainingResponse.data.training_sessions || []);
+            setCoaches(coachesResponse.data.coaches || []);
+            setAgeGroups(ageGroupsResponse.data.age_groups || []);
+            setError('');
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                'Unable to load training sessions.'
+                    'Unable to load training data.'
             );
         } finally {
             setLoading(false);
@@ -22,250 +53,481 @@ export default function AdminTraining() {
     };
 
     useEffect(() => {
-        fetchSessions();
+        fetchData();
     }, []);
 
-    const activeSessions = sessions.filter(
-        (session) => session.is_active
-    ).length;
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
 
-    const sessionTypes = new Set(
-        sessions.map((session) => session.training_type)
-    ).size;
+        setForm((current) => ({
+            ...current,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
 
-    const formatDate = (date) => {
-        if (!date) {
-            return 'Not available';
+    const resetForm = () => {
+        setForm(emptyForm);
+        setEditingId(null);
+        setError('');
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            setSaving(true);
+            setError('');
+
+            const payload = {
+                academy_id: ACADEMY_ID,
+                branch_id: null,
+                age_group_id: Number(form.age_group_id),
+                coach_id: Number(form.coach_id),
+                title: form.title,
+                session_date: form.session_date,
+                start_time: form.start_time,
+                end_time: form.end_time,
+                field_name: form.field_name || null,
+                training_type: form.training_type,
+                notes: form.notes || null,
+                is_active: form.is_active,
+            };
+
+            if (editingId) {
+                await api.patch(`/admin/training/${editingId}`, payload);
+            } else {
+                await api.post('/admin/training', payload);
+            }
+
+            resetForm();
+            await fetchData();
+        } catch (err) {
+            const validationErrors = err.response?.data?.errors;
+
+            if (validationErrors) {
+                setError(Object.values(validationErrors).flat().join(' '));
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                        'Unable to save training session.'
+                );
+            }
+        } finally {
+            setSaving(false);
         }
+    };
 
-        return new Date(date).toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
+    const handleEdit = (session) => {
+        setEditingId(session.id);
+
+        setForm({
+            title: session.title || '',
+            session_date: session.session_date
+                ? session.session_date.slice(0, 10)
+                : '',
+            start_time: session.start_time
+                ? session.start_time.slice(0, 5)
+                : '',
+            end_time: session.end_time
+                ? session.end_time.slice(0, 5)
+                : '',
+            age_group_id: session.age_group_id || '',
+            coach_id: session.coach_id || '',
+            field_name: session.field_name || '',
+            training_type: session.training_type || 'regular',
+            notes: session.notes || '',
+            is_active: Boolean(session.is_active),
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
         });
     };
 
-    const formatTime = (time) => {
-        if (!time) {
-            return 'Not available';
+    const handleToggle = async (session) => {
+        try {
+            setError('');
+
+            await api.patch(`/admin/training/${session.id}`, {
+                is_active: !session.is_active,
+            });
+
+            await fetchData();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                    'Unable to update training status.'
+            );
         }
-
-        const [hours, minutes] = time.split(':');
-        const date = new Date();
-        date.setHours(Number(hours), Number(minutes), 0);
-
-        return date.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-        });
     };
 
-    const getTypeLabel = (type) => {
-        if (!type) {
-            return 'Regular';
+    const handleDelete = async (session) => {
+        const confirmed = window.confirm(
+            `Are you sure you want to delete "${session.title}"?`
+        );
+
+        if (!confirmed) {
+            return;
         }
 
-        return type.charAt(0).toUpperCase() + type.slice(1);
+        try {
+            setError('');
+
+            await api.delete(`/admin/training/${session.id}`);
+
+            await fetchData();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                    'Unable to delete training session.'
+            );
+        }
     };
 
     return (
         <div className="admin-training-page">
-            <section className="admin-training-hero">
+            <div className="admin-training-header">
                 <div>
-                    <span>ACADEMY SCHEDULE</span>
-                    <h1>Training</h1>
+                    <h1>Training Sessions</h1>
                     <p>
-                        Manage academy training sessions, coaches, fields,
-                        and age groups.
+                        Manage training times, coaches, age groups and
+                        sessions.
                     </p>
                 </div>
+            </div>
 
-                <div className="admin-training-hero-icon">▣</div>
-            </section>
-
-            <section className="admin-training-summary">
-                <div className="admin-training-summary-card">
-                    <span>TOTAL SESSIONS</span>
-                    <strong>{sessions.length}</strong>
-                </div>
-
-                <div className="admin-training-summary-card">
-                    <span>ACTIVE SESSIONS</span>
-                    <strong>{activeSessions}</strong>
-                </div>
-
-                <div className="admin-training-summary-card">
-                    <span>TRAINING TYPES</span>
-                    <strong>{sessionTypes}</strong>
-                </div>
-            </section>
-
-            {loading && (
-                <div className="admin-training-state">
-                    <div className="admin-training-spinner"></div>
-                    <h2>Loading training sessions...</h2>
-                    <p>
-                        Please wait while we load the academy schedule.
-                    </p>
+            {error && (
+                <div className="admin-training-error">
+                    {error}
                 </div>
             )}
 
-            {!loading && error && (
-                <div className="admin-training-state">
-                    <div className="admin-training-state-icon">!</div>
-                    <h2>Unable to load training</h2>
-                    <p>{error}</p>
-                </div>
-            )}
+            <div className="admin-training-form-card">
+                <div className="admin-training-card-header">
+                    <h2>
+                        {editingId
+                            ? 'Edit Training Session'
+                            : 'Add Training Session'}
+                    </h2>
 
-            {!loading && !error && sessions.length === 0 && (
-                <div className="admin-training-state">
-                    <div className="admin-training-state-icon">▣</div>
-                    <h2>No training sessions yet</h2>
-                    <p>
-                        Academy training sessions will appear here once they
-                        are scheduled.
-                    </p>
+                    {editingId && (
+                        <button
+                            type="button"
+                            className="training-cancel-button"
+                            onClick={resetForm}
+                        >
+                            Cancel
+                        </button>
+                    )}
                 </div>
-            )}
 
-            {!loading && !error && sessions.length > 0 && (
-                <section className="admin-training-list-section">
-                    <div className="admin-training-list-header">
-                        <div>
-                            <span>TRAINING CALENDAR</span>
-                            <h2>Scheduled Sessions</h2>
+                <form
+                    onSubmit={handleSubmit}
+                    className="admin-training-form"
+                >
+                    <div className="training-form-grid">
+                        <div className="training-form-group training-form-full">
+                            <label>Session Title</label>
+                            <input
+                                type="text"
+                                name="title"
+                                value={form.title}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
-                        <span className="admin-training-count">
-                            {sessions.length} Sessions
-                        </span>
-                    </div>
+                        <div className="training-form-group">
+                            <label>Date</label>
+                            <input
+                                type="date"
+                                name="session_date"
+                                value={form.session_date}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
-                    <div className="admin-training-list">
-                        {sessions.map((session) => (
-                            <article
-                                className="admin-training-card"
-                                key={session.id}
+                        <div className="training-form-group">
+                            <label>Age Group</label>
+                            <select
+                                name="age_group_id"
+                                value={form.age_group_id}
+                                onChange={handleChange}
+                                required
                             >
-                                <div className="admin-training-date">
-                                    <span>
-                                        {new Date(
-                                            session.session_date
-                                        ).toLocaleDateString('en-US', {
-                                            month: 'short',
-                                        })}
-                                    </span>
+                                <option value="">
+                                    Select age group
+                                </option>
 
-                                    <strong>
-                                        {new Date(
-                                            session.session_date
-                                        ).getDate()}
-                                    </strong>
+                                {ageGroups.map((ageGroup) => (
+                                    <option
+                                        key={ageGroup.id}
+                                        value={ageGroup.id}
+                                    >
+                                        {ageGroup.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                                    <small>
-                                        {new Date(
-                                            session.session_date
-                                        ).toLocaleDateString('en-US', {
-                                            weekday: 'short',
-                                        })}
-                                    </small>
-                                </div>
+                        <div className="training-form-group">
+                            <label>Start Time</label>
+                            <input
+                                type="time"
+                                name="start_time"
+                                value={form.start_time}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
-                                <div className="admin-training-main">
-                                    <div className="admin-training-card-top">
-                                        <div>
-                                            <span className="admin-training-type">
-                                                {getTypeLabel(
-                                                    session.training_type
-                                                )}
-                                            </span>
+                        <div className="training-form-group">
+                            <label>End Time</label>
+                            <input
+                                type="time"
+                                name="end_time"
+                                value={form.end_time}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
-                                            <h2>{session.title}</h2>
-                                        </div>
+                        <div className="training-form-group">
+                            <label>Coach</label>
+                            <select
+                                name="coach_id"
+                                value={form.coach_id}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">
+                                    Select coach
+                                </option>
 
-                                        <span
-                                            className={`admin-training-status ${
-                                                session.is_active
-                                                    ? 'active'
-                                                    : 'inactive'
-                                            }`}
-                                        >
-                                            {session.is_active
-                                                ? 'Active'
-                                                : 'Inactive'}
-                                        </span>
-                                    </div>
+                                {coaches.map((coach) => (
+                                    <option
+                                        key={coach.id}
+                                        value={coach.id}
+                                    >
+                                        {coach.full_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                                    <div className="admin-training-details">
-                                        <div>
-                                            <span>TIME</span>
-                                            <strong>
-                                                {formatTime(
-                                                    session.start_time
-                                                )}{' '}
-                                                —{' '}
-                                                {formatTime(
-                                                    session.end_time
-                                                )}
-                                            </strong>
-                                        </div>
+                        <div className="training-form-group">
+                            <label>Field</label>
+                            <input
+                                type="text"
+                                name="field_name"
+                                value={form.field_name}
+                                onChange={handleChange}
+                                placeholder="Main Field"
+                            />
+                        </div>
 
-                                        <div>
-                                            <span>AGE GROUP</span>
-                                            <strong>
-                                                {session.age_group?.name ||
-                                                    'Not assigned'}
-                                            </strong>
-                                        </div>
+                        <div className="training-form-group">
+                            <label>Training Type</label>
+                            <select
+                                name="training_type"
+                                value={form.training_type}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="regular">Regular</option>
+                                <option value="fitness">Fitness</option>
+                                <option value="technical">Technical</option>
+                                <option value="tactical">Tactical</option>
+                                <option value="match">Match</option>
+                            </select>
+                        </div>
 
-                                        <div>
-                                            <span>COACH</span>
-                                            <strong>
-                                                {session.coach?.full_name ||
-                                                    'Not assigned'}
-                                            </strong>
-                                        </div>
+                        <div className="training-form-group training-form-full">
+                            <label>Notes</label>
+                            <textarea
+                                name="notes"
+                                rows="4"
+                                value={form.notes}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                                        <div>
-                                            <span>FIELD</span>
-                                            <strong>
-                                                {session.field_name ||
-                                                    'Not assigned'}
-                                            </strong>
-                                        </div>
-                                    </div>
-
-                                    <div className="admin-training-meta">
-                                        <span>
-                                            Academy:{' '}
-                                            {session.academy?.name ||
-                                                'Not assigned'}
-                                        </span>
-
-                                        <span>
-                                            Branch:{' '}
-                                            {session.branch?.name ||
-                                                'Not assigned'}
-                                        </span>
-
-                                        <span>
-                                            {formatDate(session.session_date)}
-                                        </span>
-                                    </div>
-
-                                    {session.notes && (
-                                        <p className="admin-training-notes">
-                                            {session.notes}
-                                        </p>
-                                    )}
-                                </div>
-                            </article>
-                        ))}
+                        <div className="training-form-checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="is_active"
+                                    checked={form.is_active}
+                                    onChange={handleChange}
+                                />
+                                Active Session
+                            </label>
+                        </div>
                     </div>
-                </section>
-            )}
+
+                    <button
+                        type="submit"
+                        className="training-save-button"
+                        disabled={saving}
+                    >
+                        {saving
+                            ? 'Saving...'
+                            : editingId
+                            ? 'Update Session'
+                            : 'Add Session'}
+                    </button>
+                </form>
+            </div>
+
+            <div className="admin-training-table-card">
+                <div className="admin-training-card-header">
+                    <h2>All Training Sessions</h2>
+                    <span className="training-count">
+                        {sessions.length}
+                    </span>
+                </div>
+
+                {loading ? (
+                    <div className="training-loading">
+                        Loading training sessions...
+                    </div>
+                ) : sessions.length === 0 ? (
+                    <div className="training-empty">
+                        No training sessions found.
+                    </div>
+                ) : (
+                    <div className="training-table-wrapper">
+                        <table className="training-table">
+                            <thead>
+                                <tr>
+                                    <th>Session</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Age Group</th>
+                                    <th>Coach</th>
+                                    <th>Type</th>
+                                    <th>Field</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {sessions.map((session) => (
+                                    <tr key={session.id}>
+                                        <td>
+                                            <div className="training-title">
+                                                {session.title}
+                                            </div>
+
+                                            {session.notes && (
+                                                <div className="training-notes">
+                                                    {session.notes}
+                                                </div>
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            {session.session_date
+                                                ? new Date(
+                                                      `${session.session_date.slice(
+                                                          0,
+                                                          10
+                                                      )}T00:00:00`
+                                                  ).toLocaleDateString()
+                                                : '-'}
+                                        </td>
+
+                                        <td>
+                                            {session.start_time?.slice(
+                                                0,
+                                                5
+                                            )}{' '}
+                                            -{' '}
+                                            {session.end_time?.slice(
+                                                0,
+                                                5
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            {session.age_group?.name || '-'}
+                                        </td>
+
+                                        <td>
+                                            {session.coach?.full_name || '-'}
+                                        </td>
+
+                                        <td>
+                                            <span className="training-type">
+                                                {session.training_type}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            {session.field_name || '-'}
+                                        </td>
+
+                                        <td>
+                                            <span
+                                                className={`training-status ${
+                                                    session.is_active
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }`}
+                                            >
+                                                {session.is_active
+                                                    ? 'Active'
+                                                    : 'Inactive'}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div className="training-actions">
+                                                <button
+                                                    type="button"
+                                                    className="training-edit-button"
+                                                    onClick={() =>
+                                                        handleEdit(session)
+                                                    }
+                                                >
+                                                    Edit
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    className="training-toggle-button"
+                                                    onClick={() =>
+                                                        handleToggle(session)
+                                                    }
+                                                >
+                                                    {session.is_active
+                                                        ? 'Deactivate'
+                                                        : 'Activate'}
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    className="training-delete-button"
+                                                    onClick={() =>
+                                                        handleDelete(session)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+
+export default AdminTraining;

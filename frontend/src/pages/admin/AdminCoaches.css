@@ -1,280 +1,315 @@
 .admin-coaches-page {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-}
-
-.admin-coaches-hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    padding: 34px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #123c2f, #1d5a45);
-    color: #fff;
-    margin-bottom: 24px;
-}
-
-.admin-coaches-hero span {
-    display: block;
-    margin-bottom: 10px;
-    color: #d8b56a;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.admin-coaches-hero h1 {
-    margin: 0 0 8px;
-    font-size: 38px;
-}
-
-.admin-coaches-hero p {
-    margin: 0;
-    color: #dce9e3;
-    font-size: 15px;
-}
-
-.admin-coaches-hero-icon {
-    width: 78px;
-    height: 78px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(216, 181, 106, 0.5);
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #d8b56a;
-    font-size: 35px;
-}
-
-.admin-coaches-summary {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 24px;
-}
-
-.admin-coaches-summary-card {
     padding: 24px;
-    border: 1px solid #e8e5dc;
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
 }
 
-.admin-coaches-summary-card span {
-    display: block;
-    margin-bottom: 10px;
-    color: #777;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+.admin-coaches-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
-.admin-coaches-summary-card strong {
-    color: #123c2f;
-    font-size: 32px;
+.admin-coaches-header h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+    color: #172033;
 }
 
-.admin-coaches-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+.admin-coaches-header p {
+    margin: 0;
+    color: #6b7280;
 }
 
-.admin-coach-card {
-    padding: 25px;
-    border: 1px solid #e8e5dc;
-    border-radius: 22px;
-    background: #fff;
-    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.admin-coaches-error {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
 }
 
-.admin-coach-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 32px rgba(18, 60, 47, 0.1);
+.admin-coaches-form-card,
+.admin-coaches-table-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
 }
 
-.admin-coach-card-top {
+.admin-coaches-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 22px;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-.admin-coach-avatar {
-    width: 58px;
-    height: 58px;
+.admin-coaches-card-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #172033;
+}
+
+.admin-coaches-form {
+    width: 100%;
+}
+
+.coach-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.coach-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.coach-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.coach-form-group input,
+.coach-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #111827;
+    background: #ffffff;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.coach-form-group input:focus,
+.coach-form-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.coach-form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.coach-form-full {
+    grid-column: 1 / -1;
+}
+
+.coach-form-checkbox {
     display: flex;
     align-items: center;
+    min-height: 46px;
+}
+
+.coach-form-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+}
+
+.coach-form-checkbox input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.coach-save-button,
+.coach-cancel-button,
+.coach-edit-button,
+.coach-toggle-button,
+.coach-delete-button {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.coach-save-button {
+    margin-top: 20px;
+    background: #2563eb;
+    color: #ffffff;
+    padding: 12px 20px;
+}
+
+.coach-save-button:hover {
+    background: #1d4ed8;
+}
+
+.coach-save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.coach-cancel-button {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.coach-cancel-button:hover {
+    background: #e5e7eb;
+}
+
+.coach-count {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    border-radius: 18px;
-    background: #e6eee9;
-    color: #123c2f;
-    font-size: 21px;
-    font-weight: 800;
-}
-
-.admin-coach-status {
-    padding: 7px 11px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 9px;
     border-radius: 20px;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.admin-coach-status.active {
-    background: #e4f3e9;
-    color: #287043;
-}
-
-.admin-coach-status.inactive {
-    background: #f1e7e7;
-    color: #8d4848;
-}
-
-.admin-coach-info h2 {
-    margin: 0 0 7px;
-    color: #123c2f;
-    font-size: 21px;
-}
-
-.admin-coach-specialization {
-    display: block;
-    margin-bottom: 22px;
-    color: #a37b30;
+    background: #eff6ff;
+    color: #2563eb;
     font-size: 13px;
     font-weight: 700;
 }
 
-.admin-coach-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
+.coach-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
-.admin-coach-details div,
-.admin-coach-contact {
-    padding: 12px;
-    border-radius: 12px;
-    background: #faf9f5;
+.coach-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
 }
 
-.admin-coach-details span,
-.admin-coach-contact span {
-    display: block;
-    margin-bottom: 5px;
-    color: #8b918e;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-.admin-coach-details strong,
-.admin-coach-contact strong {
-    display: block;
-    color: #35443e;
+.coach-table th {
+    padding: 14px 12px;
+    text-align: left;
     font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
 }
 
-.admin-coach-contact {
-    margin-top: 10px;
-}
-
-.admin-coach-bio {
-    margin: 16px 0 0;
-    padding-top: 16px;
-    border-top: 1px solid #eeeae2;
-    color: #727a75;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.admin-coaches-state {
-    padding: 70px 25px;
-    border: 1px solid #e8e5dc;
-    border-radius: 22px;
-    background: #fff;
-    text-align: center;
-}
-
-.admin-coaches-state h2 {
-    margin: 15px 0 8px;
-    color: #123c2f;
-    font-size: 21px;
-}
-
-.admin-coaches-state p {
-    margin: 0;
-    color: #858b87;
+.coach-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f0f1f3;
     font-size: 14px;
+    color: #374151;
+    vertical-align: middle;
 }
 
-.admin-coaches-state-icon {
-    width: 55px;
-    height: 55px;
-    margin: 0 auto;
-    display: flex;
+.coach-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.coach-name {
+    font-weight: 700;
+    color: #172033;
+}
+
+.coach-email {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.coach-status {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #f3eee2;
-    color: #a37b30;
-    font-size: 22px;
-    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
 }
 
-.admin-coaches-spinner {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-    border: 4px solid #e8e5dc;
-    border-top-color: #123c2f;
-    border-radius: 50%;
-    animation: adminCoachesSpin 0.8s linear infinite;
+.coach-status.active {
+    background: #dcfce7;
+    color: #15803d;
 }
 
-@keyframes adminCoachesSpin {
-    to {
-        transform: rotate(360deg);
+.coach-status.inactive {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.coach-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.coach-edit-button {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.coach-edit-button:hover {
+    background: #bfdbfe;
+}
+
+.coach-toggle-button {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.coach-toggle-button:hover {
+    background: #fde68a;
+}
+
+.coach-delete-button {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.coach-delete-button:hover {
+    background: #fecaca;
+}
+
+.coach-loading,
+.coach-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    .admin-coaches-page {
+        padding: 16px;
     }
-}
 
-@media (max-width: 1050px) {
-    .admin-coaches-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .admin-coaches-header h1 {
+        font-size: 25px;
     }
-}
 
-@media (max-width: 900px) {
-    .admin-coaches-summary {
+    .admin-coaches-form-card,
+    .admin-coaches-table-card {
+        padding: 18px;
+        border-radius: 13px;
+    }
+
+    .coach-form-grid {
         grid-template-columns: 1fr;
     }
 
-    .admin-coaches-hero {
-        padding: 26px;
+    .coach-form-full {
+        grid-column: auto;
     }
 
-    .admin-coaches-hero h1 {
-        font-size: 30px;
-    }
-}
-
-@media (max-width: 650px) {
-    .admin-coaches-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-coaches-hero {
-        padding: 22px;
-        border-radius: 18px;
-    }
-
-    .admin-coaches-hero-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 27px;
+    .admin-coaches-card-header {
+        align-items: flex-start;
     }
 }
