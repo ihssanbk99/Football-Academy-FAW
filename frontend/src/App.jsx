@@ -4,6 +4,8 @@ import Register from './pages/Register';
 import ParentDashboard from './pages/parent/ParentDashboard';
 import ParentPlayers from './pages/parent/ParentPlayers';
 import ParentTraining from './pages/parent/ParentTraining';
+import ParentPayments from './pages/parent/ParentPayments';
+import ParentNotifications from './pages/parent/ParentNotifications';
 import DashboardLayout from './layouts/DashboardLayout';
 import { useAuth } from './context/AuthContext';
 
@@ -64,6 +66,11 @@ export default function App() {
                 <Route path="/parent/dashboard" element={<ParentDashboard />} />
                 <Route path="/parent/players" element={<ParentPlayers />} />
                 <Route path="/parent/training" element={<ParentTraining />} />
+                <Route path="/parent/payments" element={<ParentPayments />} />
+                <Route
+                    path="/parent/notifications"
+                    element={<ParentNotifications />}
+                />
             </Route>
 
             <Route

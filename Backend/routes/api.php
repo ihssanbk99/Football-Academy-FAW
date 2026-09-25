@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TrainingSessionController;
@@ -28,6 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/payments/{payment}', [PaymentController::class, 'show']);
         Route::post('/payments', [PaymentController::class, 'store']);
+
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::get('/notifications/{notification}', [NotificationController::class, 'show']);
+        Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
+        Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
     });
 
     Route::middleware('role:admin')->get('/admin-test', function (Request $request) {
