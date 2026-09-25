@@ -331,6 +331,16 @@ class TransportationController extends Controller
         ]);
     }
 
+    public function parentRoutes()
+    {
+        return response()->json([
+            'routes' => BusRoute::where('academy_id', 1)
+                ->where('is_active', true)
+                ->orderBy('name')
+                ->get(),
+        ]);
+    }
+
     public function parentTransportation(Request $request)
     {
         $players = Player::where('parent_id', $request->user()->id)

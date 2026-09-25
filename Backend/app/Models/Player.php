@@ -28,11 +28,14 @@ class Player extends Model
         'phone',
         'address',
         'city',
+        'needs_transportation',
+        'transportation_route_id',
         'registration_status',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'needs_transportation' => 'boolean',
     ];
 
     public function parent(): BelongsTo
@@ -70,8 +73,18 @@ class Player extends Model
         return $this->belongsTo(JerseyNumber::class);
     }
 
+    public function transportationRoute(): BelongsTo
+    {
+        return $this->belongsTo(BusRoute::class, 'transportation_route_id');
+    }
+
     public function busAssignments(): HasMany
     {
         return $this->hasMany(PlayerBusAssignment::class);
+    }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
     }
 }

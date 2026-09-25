@@ -17,7 +17,7 @@ export default function ParentPlayers() {
             } catch (err) {
                 setError(
                     err.response?.data?.message ||
-                    'Unable to load your players.'
+                        'Unable to load your players.'
                 );
             } finally {
                 setLoading(false);
@@ -36,7 +36,7 @@ export default function ParentPlayers() {
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                'Unable to load player profile.'
+                    'Unable to load player profile.'
             );
         } finally {
             setProfileLoading(false);
@@ -57,9 +57,7 @@ export default function ParentPlayers() {
                     </p>
                 </div>
 
-                <div className="parent-players-ball">
-                    ⚽
-                </div>
+                <div className="parent-players-ball">⚽</div>
             </section>
 
             <section className="parent-players-summary">
@@ -289,6 +287,44 @@ export default function ParentPlayers() {
                                 <strong>
                                     {selectedPlayer.branch?.name ||
                                         'Not assigned'}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>UNIFORM SIZE</span>
+
+                                <strong>
+                                    {selectedPlayer.uniform_size?.name ||
+                                        'Not assigned'}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>JERSEY NUMBER</span>
+
+                                <strong>
+                                    {selectedPlayer.jersey_number?.number
+                                        ? `#${selectedPlayer.jersey_number.number}`
+                                        : 'Not assigned'}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>TRANSPORTATION</span>
+
+                                <strong>
+                                    {selectedPlayer.needs_transportation
+                                        ? 'Requested'
+                                        : 'Not requested'}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>TRANSPORTATION ROUTE</span>
+
+                                <strong>
+                                    {selectedPlayer.transportation_route
+                                        ?.name || 'Not assigned'}
                                 </strong>
                             </div>
 

@@ -29,6 +29,8 @@ export default function DashboardLayout() {
                 path: '/admin/transportation',
                 icon: '🚌',
             },
+            { label: 'Attendance', path: '/admin/attendance', icon: '✓' },
+            { label: 'Tracking', path: '/admin/tracking', icon: '📍' },
             { label: 'Payments', path: '/admin/payments', icon: '$' },
             { label: 'Offers', path: '/admin/offers', icon: '%' },
             {
@@ -39,6 +41,11 @@ export default function DashboardLayout() {
         ],
         parent: [
             { label: 'Dashboard', path: '/parent/dashboard', icon: '⌂' },
+            {
+                label: 'Register Player',
+                path: '/parent/register-player',
+                icon: '⚽',
+            },
             { label: 'My Players', path: '/parent/players', icon: '⚽' },
             {
                 label: 'Trial Booking',
@@ -46,6 +53,7 @@ export default function DashboardLayout() {
                 icon: '⚽',
             },
             { label: 'Training', path: '/parent/training', icon: '▣' },
+            { label: 'Tracking', path: '/parent/tracking', icon: '📍' },
             { label: 'Payments', path: '/parent/payments', icon: '$' },
             { label: 'Offers', path: '/parent/offers', icon: '%' },
             {

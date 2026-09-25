@@ -1,0 +1,394 @@
+.admin-tracking-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.admin-tracking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.admin-tracking-header h1 {
+    margin: 0 0 6px;
+    color: #173f35;
+    font-size: 30px;
+}
+
+.admin-tracking-header p {
+    margin: 0;
+    color: #71817b;
+    font-size: 15px;
+}
+
+.admin-tracking-live {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 14px;
+    border: 1px solid #d7e8df;
+    border-radius: 30px;
+    background: #f3faf6;
+    color: #2f6f5e;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-tracking-live span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #35a66f;
+}
+
+.admin-tracking-error {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border: 1px solid #f3c4c4;
+    border-radius: 10px;
+    background: #fff1f1;
+    color: #b42318;
+}
+
+.admin-tracking-loading,
+.admin-tracking-empty {
+    border: 1px solid #e6ebe8;
+    border-radius: 16px;
+    background: #ffffff;
+    padding: 40px;
+    text-align: center;
+    color: #71817b;
+}
+
+.admin-tracking-form-card,
+.admin-tracking-table-card {
+    margin-bottom: 24px;
+    padding: 24px;
+    border: 1px solid #e6ebe8;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(23, 63, 53, 0.06);
+}
+
+.admin-tracking-card-header {
+    margin-bottom: 20px;
+}
+
+.admin-tracking-card-header h2,
+.admin-tracking-table-header h2 {
+    margin: 0 0 5px;
+    color: #173f35;
+    font-size: 20px;
+}
+
+.admin-tracking-card-header p,
+.admin-tracking-table-header p {
+    margin: 0;
+    color: #71817b;
+    font-size: 14px;
+}
+
+.admin-tracking-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.admin-tracking-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.admin-tracking-field label {
+    color: #38564e;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-tracking-field input,
+.admin-tracking-field select {
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #d8e1dd;
+    border-radius: 9px;
+    outline: none;
+    background: #ffffff;
+    color: #263c36;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-tracking-field input:focus,
+.admin-tracking-field select:focus {
+    border-color: #4f8f7d;
+    box-shadow: 0 0 0 3px rgba(79, 143, 125, 0.12);
+}
+
+.admin-tracking-field select:disabled {
+    background: #f4f7f5;
+    cursor: not-allowed;
+}
+
+.admin-tracking-submit {
+    margin-top: 20px;
+    min-height: 44px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 9px;
+    background: #2f6f5e;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.admin-tracking-submit:hover {
+    background: #245b4d;
+    transform: translateY(-1px);
+}
+
+.admin-tracking-submit:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-tracking-overview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.admin-tracking-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #e6ebe8;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(23, 63, 53, 0.05);
+}
+
+.admin-tracking-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: #edf5f1;
+    color: #2f6f5e;
+    font-size: 21px;
+}
+
+.admin-tracking-stat strong {
+    display: block;
+    margin-bottom: 3px;
+    color: #173f35;
+    font-size: 24px;
+}
+
+.admin-tracking-stat span:last-child {
+    color: #71817b;
+    font-size: 13px;
+}
+
+.admin-tracking-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.admin-tracking-table-header > span {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #edf5f1;
+    color: #2f6f5e;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-tracking-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-tracking-table {
+    width: 100%;
+    min-width: 1050px;
+    border-collapse: collapse;
+}
+
+.admin-tracking-table th {
+    padding: 13px 14px;
+    border-bottom: 1px solid #e1e9e5;
+    background: #f4f8f6;
+    color: #38564e;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.admin-tracking-table td {
+    padding: 14px;
+    border-bottom: 1px solid #edf1ef;
+    color: #435850;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-tracking-table tbody tr:hover {
+    background: #fbfdfc;
+}
+
+.admin-tracking-table td strong {
+    color: #263c36;
+}
+
+.admin-tracking-status {
+    min-width: 145px;
+    padding: 7px 9px;
+    border: 1px solid #d8e1dd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-tracking-status.scheduled {
+    background: #f2f4f5;
+    color: #56645f;
+}
+
+.admin-tracking-status.on_the_way,
+.admin-tracking-status.near_stop {
+    background: #fff7e8;
+    border-color: #f1d39b;
+    color: #a15c00;
+}
+
+.admin-tracking-status.at_stop,
+.admin-tracking-status.player_picked_up {
+    background: #eef7ff;
+    border-color: #c5dff5;
+    color: #23618d;
+}
+
+.admin-tracking-status.arrived_academy,
+.admin-tracking-status.in_training {
+    background: #edf8f1;
+    border-color: #bfe2cc;
+    color: #247047;
+}
+
+.admin-tracking-status.return_trip,
+.admin-tracking-status.near_home_stop {
+    background: #fff4ec;
+    border-color: #f1c9a9;
+    color: #a04d17;
+}
+
+.admin-tracking-status.player_dropped_off,
+.admin-tracking-status.completed {
+    background: #f0f5ff;
+    border-color: #cbd9f5;
+    color: #3b5790;
+}
+
+.admin-tracking-status-label {
+    display: none;
+}
+
+.admin-tracking-delete {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 7px;
+    background: #fff0f0;
+    color: #b42318;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.admin-tracking-delete:hover {
+    background: #ffe0e0;
+}
+
+.admin-tracking-empty div {
+    margin-bottom: 10px;
+    font-size: 42px;
+}
+
+.admin-tracking-empty h3 {
+    margin: 0 0 7px;
+    color: #173f35;
+}
+
+.admin-tracking-empty p {
+    margin: 0;
+    color: #71817b;
+}
+
+@media (max-width: 900px) {
+    .admin-tracking-page {
+        padding: 16px;
+    }
+
+    .admin-tracking-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-tracking-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-tracking-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-tracking-form-card,
+    .admin-tracking-table-card {
+        padding: 18px;
+    }
+
+    .admin-tracking-header h1 {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 500px) {
+    .admin-tracking-page {
+        padding: 12px;
+    }
+
+    .admin-tracking-form-card,
+    .admin-tracking-table-card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .admin-tracking-table-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-tracking-submit {
+        width: 100%;
+    }
+}

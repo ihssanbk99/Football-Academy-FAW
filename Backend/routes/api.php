@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AgeGroupController;
 use App\Http\Controllers\Api\CoachController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Api\OfferController;
 use App\Http\Controllers\Api\ParentDashboardController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\TrackingController;
 use App\Http\Controllers\Api\TrainingSessionController;
 use App\Http\Controllers\Api\TrialBookingController;
 use App\Http\Controllers\Api\UniformController;
@@ -31,14 +33,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:parent')->group(function () {
         Route::get('/parent/dashboard', [ParentDashboardController::class, 'index']);
 
+        Route::get('/age-groups', [AgeGroupController::class, 'index']);
+
         Route::apiResource('players', PlayerController::class);
 
         Route::get('/players/{player}/uniform', [UniformController::class, 'playerUniform']);
         Route::patch('/players/{player}/uniform', [UniformController::class, 'assign']);
 
         Route::get('/uniform/sizes', [UniformController::class, 'sizes']);
-        Route::get('/uniform/numbers', [UniformController::class, 'availableNumbers']);
+        Route::get('/jersey-numbers/available', [UniformController::class, 'availableNumbers']);
 
+        Route::get('/transportation/routes', [TransportationController::class, 'parentRoutes']);
         Route::get('/transportation', [TransportationController::class, 'parentTransportation']);
 
         Route::get('/training-sessions', [TrainingSessionController::class, 'index']);
@@ -58,6 +63,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
 
         Route::get('/offers', [OfferController::class, 'index']);
+
+        Route::get('/attendance', [AttendanceController::class, 'parentIndex']);
+
+        Route::get('/tracking', [TrackingController::class, 'parentIndex']);
     });
 
     Route::middleware('role:admin')->group(function () {
@@ -121,6 +130,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/transportation/assignments', [TransportationController::class, 'adminAssignments']);
         Route::post('/admin/transportation/assignments', [TransportationController::class, 'adminAssignPlayer']);
         Route::delete('/admin/transportation/assignments/{assignment}', [TransportationController::class, 'adminRemoveAssignment']);
+
+        Route::get('/admin/attendance', [AttendanceController::class, 'adminIndex']);
+        Route::post('/admin/attendance', [AttendanceController::class, 'adminStore']);
+        Route::patch('/admin/attendance/{attendance}', [AttendanceController::class, 'adminUpdate']);
+        Route::delete('/admin/attendance/{attendance}', [AttendanceController::class, 'adminDestroy']);
+
+        Route::get('/admin/tracking', [TrackingController::class, 'adminIndex']);
+        Route::post('/admin/tracking', [TrackingController::class, 'adminStore']);
+        Route::patch('/admin/tracking/{tracking}', [TrackingController::class, 'adminUpdate']);
+        Route::delete('/admin/tracking/{tracking}', [TrackingController::class, 'adminDestroy']);
 
         Route::get('/admin-test', function (Request $request) {
             return response()->json([

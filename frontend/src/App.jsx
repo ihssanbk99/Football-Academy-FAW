@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RegisterPlayer from './pages/RegisterPlayer';
 
 import DashboardLayout from './layouts/DashboardLayout';
 
@@ -15,6 +16,8 @@ import AdminTraining from './pages/admin/AdminTraining';
 import AdminTrialBookings from './pages/admin/AdminTrialBookings';
 import AdminUniforms from './pages/admin/AdminUniforms';
 import AdminTransportation from './pages/admin/AdminTransportation';
+import AdminAttendance from './pages/admin/AdminAttendance';
+import AdminTracking from './pages/admin/AdminTracking';
 import AdminPayments from './pages/admin/AdminPayments';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminNotifications from './pages/admin/AdminNotifications';
@@ -23,6 +26,7 @@ import ParentDashboard from './pages/parent/ParentDashboard';
 import ParentPlayers from './pages/parent/ParentPlayers';
 import ParentTraining from './pages/parent/ParentTraining';
 import ParentTrialBooking from './pages/parent/ParentTrialBooking';
+import ParentTracking from './pages/parent/ParentTracking';
 import ParentPayments from './pages/parent/ParentPayments';
 import ParentOffers from './pages/parent/ParentOffers';
 import ParentNotifications from './pages/parent/ParentNotifications';
@@ -74,6 +78,8 @@ function App() {
                     path="transportation"
                     element={<AdminTransportation />}
                 />
+                <Route path="attendance" element={<AdminAttendance />} />
+                <Route path="tracking" element={<AdminTracking />} />
                 <Route path="payments" element={<AdminPayments />} />
                 <Route path="offers" element={<AdminOffers />} />
                 <Route
@@ -91,12 +97,17 @@ function App() {
                 }
             >
                 <Route path="dashboard" element={<ParentDashboard />} />
+                <Route
+                    path="register-player"
+                    element={<RegisterPlayer />}
+                />
                 <Route path="players" element={<ParentPlayers />} />
                 <Route path="training" element={<ParentTraining />} />
                 <Route
                     path="trial-booking"
                     element={<ParentTrialBooking />}
                 />
+                <Route path="tracking" element={<ParentTracking />} />
                 <Route path="payments" element={<ParentPayments />} />
                 <Route path="offers" element={<ParentOffers />} />
                 <Route
