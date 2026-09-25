@@ -1,0 +1,285 @@
+.admin-trial-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #17241c;
+}
+
+.admin-trial-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.admin-trial-header span {
+    color: #c49a3d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.admin-trial-header h1 {
+    margin: 7px 0 5px;
+    color: #123524;
+    font-size: 28px;
+}
+
+.admin-trial-header p {
+    margin: 0;
+    color: #7d8781;
+    font-size: 12px;
+}
+
+.admin-trial-count {
+    padding: 9px 13px;
+    border: 1px solid #dfe6e1;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #217346;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.admin-trial-error {
+    margin-bottom: 18px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    background: #fde2e2;
+    color: #b33a3a;
+    font-size: 11px;
+}
+
+.admin-trial-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-trial-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e3e8e5;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+}
+
+.admin-trial-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #edf0ee;
+}
+
+.admin-trial-label {
+    color: #c49a3d !important;
+    font-size: 8px !important;
+    letter-spacing: 1.5px !important;
+}
+
+.admin-trial-top h2 {
+    margin: 5px 0 0;
+    color: #17241c;
+    font-size: 17px;
+}
+
+.admin-trial-status {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.admin-trial-status.pending {
+    background: #fff3d1;
+    color: #a66a00;
+}
+
+.admin-trial-status.approved {
+    background: #dcf3e3;
+    color: #16703a;
+}
+
+.admin-trial-status.rejected {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.admin-trial-status.completed {
+    background: #e9f2ec;
+    color: #217346;
+}
+
+.admin-trial-info {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 18px 0;
+}
+
+.admin-trial-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.admin-trial-info span,
+.admin-trial-notes span,
+.admin-trial-admin-notes span {
+    color: #929b96;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.admin-trial-info strong {
+    color: #344139;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.admin-trial-notes,
+.admin-trial-admin-notes {
+    margin-top: 2px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    background: #f7f9f8;
+}
+
+.admin-trial-notes p,
+.admin-trial-admin-notes p {
+    margin: 6px 0 0;
+    color: #59645d;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.admin-trial-admin-notes {
+    margin-top: 10px;
+    background: #fff8e8;
+}
+
+.admin-trial-actions {
+    display: flex;
+    gap: 9px;
+    margin-top: 18px;
+}
+
+.admin-trial-actions button,
+.admin-trial-reject-box button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-trial-actions button:disabled,
+.admin-trial-reject-box button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.admin-trial-approve {
+    background: #217346;
+    color: #ffffff;
+}
+
+.admin-trial-reject {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.admin-trial-register {
+    background: #123524;
+    color: #ffffff;
+}
+
+.admin-trial-reject-box {
+    margin-top: 16px;
+    padding: 15px;
+    border: 1px solid #f0d4d4;
+    border-radius: 10px;
+    background: #fffafa;
+}
+
+.admin-trial-reject-box label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #4f5b54;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.admin-trial-reject-box textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #dfe6e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #17241c;
+    font: inherit;
+    resize: vertical;
+    outline: none;
+}
+
+.admin-trial-reject-box textarea:focus {
+    border-color: #b33a3a;
+}
+
+.admin-trial-reject-box > div {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.admin-trial-confirm-reject {
+    background: #b33a3a;
+    color: #ffffff;
+}
+
+.admin-trial-cancel {
+    background: #e9eceb;
+    color: #465149;
+}
+
+.admin-trial-empty {
+    padding: 55px 20px;
+    text-align: center;
+    color: #929b96;
+    font-size: 12px;
+}
+
+@media (max-width: 850px) {
+    .admin-trial-info {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-trial-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-trial-info {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-trial-card {
+        padding: 18px;
+    }
+
+    .admin-trial-top {
+        align-items: flex-start;
+    }
+}

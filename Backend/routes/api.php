@@ -6,9 +6,13 @@ use App\Http\Controllers\Api\AgeGroupController;
 use App\Http\Controllers\Api\CoachController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\OfferController;
+use App\Http\Controllers\Api\ParentDashboardController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\TrainingSessionController;
+use App\Http\Controllers\Api\TrialBookingController;
+use App\Http\Controllers\Api\UniformController;
+use App\Http\Controllers\Api\TransportationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +29,24 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('role:parent')->group(function () {
+        Route::get('/parent/dashboard', [ParentDashboardController::class, 'index']);
+
         Route::apiResource('players', PlayerController::class);
+
+        Route::get('/players/{player}/uniform', [UniformController::class, 'playerUniform']);
+        Route::patch('/players/{player}/uniform', [UniformController::class, 'assign']);
+
+        Route::get('/uniform/sizes', [UniformController::class, 'sizes']);
+        Route::get('/uniform/numbers', [UniformController::class, 'availableNumbers']);
+
+        Route::get('/transportation', [TransportationController::class, 'parentTransportation']);
 
         Route::get('/training-sessions', [TrainingSessionController::class, 'index']);
         Route::get('/training-sessions/{trainingSession}', [TrainingSessionController::class, 'show']);
+
+        Route::get('/trial-bookings', [TrialBookingController::class, 'index']);
+        Route::post('/trial-bookings', [TrialBookingController::class, 'store']);
+        Route::get('/trial-bookings/{trialBooking}', [TrialBookingController::class, 'show']);
 
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/payments/{payment}', [PaymentController::class, 'show']);
@@ -47,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/admin/players', [PlayerController::class, 'adminIndex']);
         Route::get('/admin/parents', [NotificationController::class, 'adminParents']);
+
         Route::get('/admin/coaches', [CoachController::class, 'adminIndex']);
         Route::post('/admin/coaches', [CoachController::class, 'adminStore']);
         Route::patch('/admin/coaches/{coach}', [CoachController::class, 'adminUpdate']);
@@ -59,6 +78,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/admin/training/{trainingSession}', [TrainingSessionController::class, 'adminUpdate']);
         Route::delete('/admin/training/{trainingSession}', [TrainingSessionController::class, 'adminDestroy']);
 
+        Route::get('/admin/trial-bookings', [TrialBookingController::class, 'adminIndex']);
+        Route::patch('/admin/trial-bookings/{trialBooking}/approve', [TrialBookingController::class, 'adminApprove']);
+        Route::patch('/admin/trial-bookings/{trialBooking}/reject', [TrialBookingController::class, 'adminReject']);
+        Route::post('/admin/trial-bookings/{trialBooking}/register-player', [TrialBookingController::class, 'adminRegisterPlayer']);
+
         Route::get('/admin/payments', [PaymentController::class, 'adminIndex']);
 
         Route::get('/admin/offers', [OfferController::class, 'adminIndex']);
@@ -69,6 +93,34 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/notifications', [NotificationController::class, 'adminIndex']);
         Route::post('/admin/notifications', [NotificationController::class, 'adminStore']);
         Route::delete('/admin/notifications/{notification}', [NotificationController::class, 'adminDestroy']);
+
+        Route::get('/admin/uniform/sizes', [UniformController::class, 'adminSizes']);
+        Route::post('/admin/uniform/sizes', [UniformController::class, 'adminStoreSize']);
+        Route::patch('/admin/uniform/sizes/{uniformSize}', [UniformController::class, 'adminUpdateSize']);
+        Route::delete('/admin/uniform/sizes/{uniformSize}', [UniformController::class, 'adminDeleteSize']);
+
+        Route::get('/admin/uniform/numbers', [UniformController::class, 'adminNumbers']);
+        Route::post('/admin/uniform/numbers', [UniformController::class, 'adminStoreNumber']);
+        Route::patch('/admin/uniform/numbers/{jerseyNumber}', [UniformController::class, 'adminUpdateNumber']);
+        Route::delete('/admin/uniform/numbers/{jerseyNumber}', [UniformController::class, 'adminDeleteNumber']);
+
+        Route::get('/admin/transportation/buses', [TransportationController::class, 'adminBuses']);
+        Route::post('/admin/transportation/buses', [TransportationController::class, 'adminStoreBus']);
+        Route::patch('/admin/transportation/buses/{bus}', [TransportationController::class, 'adminUpdateBus']);
+        Route::delete('/admin/transportation/buses/{bus}', [TransportationController::class, 'adminDestroyBus']);
+
+        Route::get('/admin/transportation/routes', [TransportationController::class, 'adminRoutes']);
+        Route::post('/admin/transportation/routes', [TransportationController::class, 'adminStoreRoute']);
+        Route::patch('/admin/transportation/routes/{busRoute}', [TransportationController::class, 'adminUpdateRoute']);
+        Route::delete('/admin/transportation/routes/{busRoute}', [TransportationController::class, 'adminDestroyRoute']);
+
+        Route::post('/admin/transportation/routes/{busRoute}/stops', [TransportationController::class, 'adminStoreStop']);
+        Route::patch('/admin/transportation/stops/{busStop}', [TransportationController::class, 'adminUpdateStop']);
+        Route::delete('/admin/transportation/stops/{busStop}', [TransportationController::class, 'adminDestroyStop']);
+
+        Route::get('/admin/transportation/assignments', [TransportationController::class, 'adminAssignments']);
+        Route::post('/admin/transportation/assignments', [TransportationController::class, 'adminAssignPlayer']);
+        Route::delete('/admin/transportation/assignments/{assignment}', [TransportationController::class, 'adminRemoveAssignment']);
 
         Route::get('/admin-test', function (Request $request) {
             return response()->json([

@@ -1,23 +1,31 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ParentDashboard from './pages/parent/ParentDashboard';
-import ParentPlayers from './pages/parent/ParentPlayers';
-import ParentTraining from './pages/parent/ParentTraining';
-import ParentPayments from './pages/parent/ParentPayments';
-import ParentNotifications from './pages/parent/ParentNotifications';
-import ParentOffers from './pages/parent/ParentOffers';
+
+import DashboardLayout from './layouts/DashboardLayout';
+
 import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminNotifications from './pages/admin/AdminNotifications';
 import AdminPlayers from './pages/admin/AdminPlayers';
 import AdminParents from './pages/admin/AdminParents';
 import AdminCoaches from './pages/admin/AdminCoaches';
 import AdminAgeGroups from './pages/admin/AdminAgeGroups';
 import AdminTraining from './pages/admin/AdminTraining';
+import AdminTrialBookings from './pages/admin/AdminTrialBookings';
+import AdminUniforms from './pages/admin/AdminUniforms';
+import AdminTransportation from './pages/admin/AdminTransportation';
 import AdminPayments from './pages/admin/AdminPayments';
 import AdminOffers from './pages/admin/AdminOffers';
-import DashboardLayout from './layouts/DashboardLayout';
-import { useAuth } from './context/AuthContext';
+import AdminNotifications from './pages/admin/AdminNotifications';
+
+import ParentDashboard from './pages/parent/ParentDashboard';
+import ParentPlayers from './pages/parent/ParentPlayers';
+import ParentTraining from './pages/parent/ParentTraining';
+import ParentTrialBooking from './pages/parent/ParentTrialBooking';
+import ParentPayments from './pages/parent/ParentPayments';
+import ParentOffers from './pages/parent/ParentOffers';
+import ParentNotifications from './pages/parent/ParentNotifications';
 
 function ProtectedRoute({ children, roles }) {
     const { user, loading } = useAuth();
@@ -31,98 +39,76 @@ function ProtectedRoute({ children, roles }) {
     }
 
     if (roles && !roles.includes(user.role)) {
-        return <Navigate to={`/${user.role}/dashboard`} replace />;
+        return <Navigate to="/" replace />;
     }
 
     return children;
 }
 
-function DashboardHome() {
-    const { user } = useAuth();
-
-    return (
-        <div>
-            <h1>Welcome, {user?.name}</h1>
-            <p>Your {user?.role} dashboard is ready.</p>
-        </div>
-    );
-}
-
-export default function App() {
+function App() {
     return (
         <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
             <Route
+                path="/admin"
                 element={
                     <ProtectedRoute roles={['admin']}>
                         <DashboardLayout />
                     </ProtectedRoute>
                 }
             >
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="players" element={<AdminPlayers />} />
+                <Route path="parents" element={<AdminParents />} />
+                <Route path="coaches" element={<AdminCoaches />} />
+                <Route path="age-groups" element={<AdminAgeGroups />} />
+                <Route path="training" element={<AdminTraining />} />
                 <Route
-                    path="/admin/dashboard"
-                    element={<AdminDashboard />}
+                    path="trial-bookings"
+                    element={<AdminTrialBookings />}
                 />
-                <Route path="/admin/players" element={<AdminPlayers />} />
-                <Route path="/admin/parents" element={<AdminParents />} />
-                <Route path="/admin/coaches" element={<AdminCoaches />} />
+                <Route path="uniforms" element={<AdminUniforms />} />
                 <Route
-                    path="/admin/age-groups"
-                    element={<AdminAgeGroups />}
+                    path="transportation"
+                    element={<AdminTransportation />}
                 />
+                <Route path="payments" element={<AdminPayments />} />
+                <Route path="offers" element={<AdminOffers />} />
                 <Route
-                    path="/admin/training"
-                    element={<AdminTraining />}
-                />
-                <Route
-                    path="/admin/payments"
-                    element={<AdminPayments />}
-                />
-                <Route
-                    path="/admin/offers"
-                    element={<AdminOffers />}
-                />
-                <Route
-                    path="/admin/notifications"
+                    path="notifications"
                     element={<AdminNotifications />}
                 />
             </Route>
 
             <Route
+                path="/parent"
                 element={
                     <ProtectedRoute roles={['parent']}>
                         <DashboardLayout />
                     </ProtectedRoute>
                 }
             >
-                <Route path="/parent/dashboard" element={<ParentDashboard />} />
-                <Route path="/parent/players" element={<ParentPlayers />} />
-                <Route path="/parent/training" element={<ParentTraining />} />
-                <Route path="/parent/payments" element={<ParentPayments />} />
+                <Route path="dashboard" element={<ParentDashboard />} />
+                <Route path="players" element={<ParentPlayers />} />
+                <Route path="training" element={<ParentTraining />} />
                 <Route
-                    path="/parent/notifications"
+                    path="trial-booking"
+                    element={<ParentTrialBooking />}
+                />
+                <Route path="payments" element={<ParentPayments />} />
+                <Route path="offers" element={<ParentOffers />} />
+                <Route
+                    path="notifications"
                     element={<ParentNotifications />}
                 />
-                <Route
-                    path="/parent/offers"
-                    element={<ParentOffers />}
-                />
             </Route>
 
-            <Route
-                element={
-                    <ProtectedRoute roles={['coach']}>
-                        <DashboardLayout />
-                    </ProtectedRoute>
-                }
-            >
-                <Route path="/coach/dashboard" element={<DashboardHome />} />
-            </Route>
-
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     );
 }
+
+export default App;

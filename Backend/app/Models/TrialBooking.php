@@ -2,37 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Player extends Model
+class TrialBooking extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'parent_id',
         'academy_id',
         'branch_id',
         'age_group_id',
-        'coach_id',
+        'training_session_id',
         'first_name',
         'last_name',
         'date_of_birth',
-        'photo',
-        'position',
-        'level',
-        'uniform_size_id',
-        'jersey_number_id',
         'phone',
-        'address',
-        'city',
-        'registration_status',
+        'position',
+        'notes',
+        'status',
+        'admin_notes',
+        'reviewed_at',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'reviewed_at' => 'datetime',
     ];
 
     public function parent(): BelongsTo
@@ -55,23 +49,8 @@ class Player extends Model
         return $this->belongsTo(AgeGroup::class);
     }
 
-    public function coach(): BelongsTo
+    public function trainingSession(): BelongsTo
     {
-        return $this->belongsTo(Coach::class);
-    }
-
-    public function uniformSize(): BelongsTo
-    {
-        return $this->belongsTo(UniformSize::class);
-    }
-
-    public function jerseyNumber(): BelongsTo
-    {
-        return $this->belongsTo(JerseyNumber::class);
-    }
-
-    public function busAssignments(): HasMany
-    {
-        return $this->hasMany(PlayerBusAssignment::class);
+        return $this->belongsTo(TrainingSession::class);
     }
 }

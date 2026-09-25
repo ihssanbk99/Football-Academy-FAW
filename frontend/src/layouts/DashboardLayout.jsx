@@ -18,17 +18,41 @@ export default function DashboardLayout() {
             { label: 'Coaches', path: '/admin/coaches', icon: '★' },
             { label: 'Age Groups', path: '/admin/age-groups', icon: '◫' },
             { label: 'Training', path: '/admin/training', icon: '▣' },
+            {
+                label: 'Trial Bookings',
+                path: '/admin/trial-bookings',
+                icon: '⚽',
+            },
+            { label: 'Uniforms', path: '/admin/uniforms', icon: '👕' },
+            {
+                label: 'Transportation',
+                path: '/admin/transportation',
+                icon: '🚌',
+            },
             { label: 'Payments', path: '/admin/payments', icon: '$' },
             { label: 'Offers', path: '/admin/offers', icon: '%' },
-            { label: 'Notifications', path: '/admin/notifications', icon: '◌' },
+            {
+                label: 'Notifications',
+                path: '/admin/notifications',
+                icon: '◌',
+            },
         ],
         parent: [
             { label: 'Dashboard', path: '/parent/dashboard', icon: '⌂' },
             { label: 'My Players', path: '/parent/players', icon: '⚽' },
+            {
+                label: 'Trial Booking',
+                path: '/parent/trial-booking',
+                icon: '⚽',
+            },
             { label: 'Training', path: '/parent/training', icon: '▣' },
             { label: 'Payments', path: '/parent/payments', icon: '$' },
             { label: 'Offers', path: '/parent/offers', icon: '%' },
-            { label: 'Notifications', path: '/parent/notifications', icon: '◌' },
+            {
+                label: 'Notifications',
+                path: '/parent/notifications',
+                icon: '◌',
+            },
         ],
         coach: [
             { label: 'Dashboard', path: '/coach/dashboard', icon: '⌂' },
@@ -48,9 +72,14 @@ export default function DashboardLayout() {
 
     return (
         <div className="dashboard-layout">
-            <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
+            <aside
+                className={`dashboard-sidebar ${
+                    sidebarOpen ? 'open' : ''
+                }`}
+            >
                 <div className="dashboard-brand">
                     <div className="dashboard-brand-mark">⚽</div>
+
                     <div>
                         <strong>FAW</strong>
                         <span>Football Academy</span>
@@ -68,13 +97,16 @@ export default function DashboardLayout() {
                             key={item.path}
                             to={item.path}
                             className={({ isActive }) =>
-                                `dashboard-nav-item ${isActive ? 'active' : ''}`
+                                `dashboard-nav-item ${
+                                    isActive ? 'active' : ''
+                                }`
                             }
                             onClick={() => setSidebarOpen(false)}
                         >
                             <span className="dashboard-nav-icon">
                                 {item.icon}
                             </span>
+
                             <span>{item.label}</span>
                         </NavLink>
                     ))}

@@ -1,0 +1,222 @@
+.parent-trial-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #17241c;
+}
+
+.parent-trial-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.parent-trial-header span,
+.parent-trial-card-header span {
+    color: #c49a3d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.parent-trial-header h1 {
+    margin: 8px 0 6px;
+    color: #123524;
+    font-size: 30px;
+}
+
+.parent-trial-header p {
+    margin: 0;
+    color: #7d8781;
+    font-size: 13px;
+}
+
+.parent-trial-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 22px;
+}
+
+.parent-trial-card {
+    padding: 26px;
+    background: #ffffff;
+    border: 1px solid #e4e9e5;
+    border-radius: 17px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+}
+
+.parent-trial-card-header {
+    margin-bottom: 22px;
+}
+
+.parent-trial-card-header h2 {
+    margin: 5px 0 0;
+    color: #17241c;
+    font-size: 20px;
+}
+
+.parent-trial-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.parent-trial-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 16px;
+    color: #4f5b54;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.parent-trial-card input,
+.parent-trial-card select,
+.parent-trial-card textarea {
+    width: 100%;
+    border: 1px solid #dfe6e1;
+    border-radius: 9px;
+    padding: 11px 12px;
+    background: #f8faf9;
+    color: #17241c;
+    font: inherit;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.parent-trial-card input:focus,
+.parent-trial-card select:focus,
+.parent-trial-card textarea:focus {
+    border-color: #217346;
+    background: #ffffff;
+}
+
+.parent-trial-card textarea {
+    resize: vertical;
+}
+
+.parent-trial-card button {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 12px;
+    background: #217346;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.parent-trial-card button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.parent-trial-success,
+.parent-trial-error {
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+}
+
+.parent-trial-success {
+    background: #dcf3e3;
+    color: #16703a;
+}
+
+.parent-trial-error {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.parent-trial-bookings {
+    display: flex;
+    flex-direction: column;
+}
+
+.parent-trial-booking {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf0ee;
+}
+
+.parent-trial-booking:last-child {
+    border-bottom: none;
+}
+
+.parent-trial-booking > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.parent-trial-booking strong {
+    color: #17241c;
+    font-size: 13px;
+}
+
+.parent-trial-booking span:not(.parent-trial-status) {
+    color: #8a938e;
+    font-size: 10px;
+}
+
+.parent-trial-status {
+    flex-shrink: 0;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.parent-trial-status.pending {
+    background: #fff3d1;
+    color: #a66a00;
+}
+
+.parent-trial-status.approved {
+    background: #dcf3e3;
+    color: #16703a;
+}
+
+.parent-trial-status.rejected {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.parent-trial-status.completed {
+    background: #e9f2ec;
+    color: #217346;
+}
+
+.parent-trial-empty {
+    padding: 40px 15px;
+    text-align: center;
+    color: #9aa39e;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .parent-trial-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .parent-trial-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .parent-trial-card {
+        padding: 20px;
+    }
+
+    .parent-trial-header h1 {
+        font-size: 25px;
+    }
+}

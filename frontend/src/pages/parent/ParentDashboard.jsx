@@ -1,799 +1,430 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import './ParentDashboard.css';
 
-export default function ParentDashboard() {
-    const { user } = useAuth();
-    const [players, setPlayers] = useState([]);
-    const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const [showAddPlayer, setShowAddPlayer] = useState(false);
+function ParentDashboard() {
+    const [dashboard, setDashboard] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [profileLoading, setProfileLoading] = useState(false);
-    const [addingPlayer, setAddingPlayer] = useState(false);
     const [error, setError] = useState('');
-    const [profileError, setProfileError] = useState('');
-    const [formError, setFormError] = useState('');
 
-    const [form, setForm] = useState({
-        first_name: '',
-        last_name: '',
-        date_of_birth: '',
-        position: '',
-        level: 'beginner',
-        phone: '',
-        city: '',
-        address: '',
-    });
+    const fetchDashboard = async () => {
+        try {
+            setLoading(true);
+            const response = await api.get('/parent/dashboard');
+            setDashboard(response.data);
+            setError('');
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                    'Unable to load your dashboard.'
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchPlayers = async () => {
-            try {
-                const response = await api.get('/players');
-                setPlayers(response.data.players || []);
-            } catch (err) {
-                setError(
-                    err.response?.data?.message ||
-                    'Unable to load your players.'
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPlayers();
+        fetchDashboard();
     }, []);
 
-    const handleViewProfile = async (playerId) => {
-        setProfileLoading(true);
-        setProfileError('');
-
-        try {
-            const response = await api.get(`/players/${playerId}`);
-            setSelectedPlayer(response.data.player);
-        } catch (err) {
-            setProfileError(
-                err.response?.data?.message ||
-                'Unable to load player profile.'
-            );
-        } finally {
-            setProfileLoading(false);
+    const formatDate = (date) => {
+        if (!date) {
+            return '-';
         }
-    };
 
-    const closeProfile = () => {
-        setSelectedPlayer(null);
-        setProfileError('');
-    };
-
-    const openAddPlayer = () => {
-        setFormError('');
-        setForm({
-            first_name: '',
-            last_name: '',
-            date_of_birth: '',
-            position: '',
-            level: 'beginner',
-            phone: '',
-            city: '',
-            address: '',
-        });
-        setShowAddPlayer(true);
-    };
-
-    const closeAddPlayer = () => {
-        if (!addingPlayer) {
-            setShowAddPlayer(false);
-            setFormError('');
-        }
-    };
-
-    const handleFormChange = (e) => {
-        const { name, value } = e.target;
-
-        setForm((current) => ({
-            ...current,
-            [name]: value,
-        }));
-    };
-
-    const handleAddPlayer = async (e) => {
-        e.preventDefault();
-        setFormError('');
-        setAddingPlayer(true);
-
-        try {
-            const response = await api.post('/players', {
-                academy_id: 1,
-                first_name: form.first_name,
-                last_name: form.last_name,
-                date_of_birth: form.date_of_birth,
-                position: form.position || null,
-                level: form.level,
-                phone: form.phone || null,
-                city: form.city || null,
-                address: form.address || null,
-            });
-
-            const newPlayer = response.data.player;
-
-            const profileResponse = await api.get(
-                `/players/${newPlayer.id}`
-            );
-
-            setPlayers((current) => [
-                profileResponse.data.player,
-                ...current,
-            ]);
-
-            setShowAddPlayer(false);
-            setForm({
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                position: '',
-                level: 'beginner',
-                phone: '',
-                city: '',
-                address: '',
-            });
-        } catch (err) {
-            const validationErrors = err.response?.data?.errors;
-
-            if (validationErrors) {
-                const firstError = Object.values(validationErrors)[0];
-                setFormError(
-                    Array.isArray(firstError)
-                        ? firstError[0]
-                        : firstError
-                );
-            } else {
-                setFormError(
-                    err.response?.data?.message ||
-                    'Unable to add player.'
-                );
+        return new Date(`${date.slice(0, 10)}T00:00:00`).toLocaleDateString(
+            undefined,
+            {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
             }
-        } finally {
-            setAddingPlayer(false);
-        }
+        );
     };
+
+    const formatTime = (time) => {
+        if (!time) {
+            return '-';
+        }
+
+        return time.slice(0, 5);
+    };
+
+    if (loading) {
+        return (
+            <div className="parent-dashboard-page">
+                <div className="parent-dashboard-loading">
+                    Loading your dashboard...
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="parent-dashboard-page">
+                <div className="parent-dashboard-error">
+                    <p>{error}</p>
+                    <button
+                        type="button"
+                        onClick={fetchDashboard}
+                    >
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const stats = dashboard?.stats || {};
+    const players = dashboard?.players || [];
+    const sessions = dashboard?.training_sessions || [];
+    const payments = dashboard?.payments || [];
+    const notifications = dashboard?.notifications || [];
+    const offers = dashboard?.offers || [];
 
     return (
-        <div className="parent-dashboard">
-            <section className="parent-welcome">
-                <div>
-                    <span className="parent-eyebrow">PARENT PORTAL</span>
+        <div className="parent-dashboard-page">
+            <section className="parent-dashboard-hero">
+                <div className="parent-dashboard-hero-content">
+                    <span className="parent-dashboard-eyebrow">
+                        FAW ACADEMY
+                    </span>
 
                     <h1>
-                        Welcome back, {user?.name?.split(' ')[0] || 'Parent'}.
+                        Welcome back,{' '}
+                        <strong>
+                            {dashboard?.user?.name || 'Parent'}
+                        </strong>
                     </h1>
 
                     <p>
-                        Keep track of your players, training and academy journey
-                        from one place.
+                        Manage your players, training, payments and
+                        academy updates from one place.
                     </p>
-                </div>
-
-                <div className="parent-welcome-ball">
-                    ⚽
                 </div>
             </section>
 
-            <section className="parent-stats">
+            <div className="parent-stats-grid">
                 <div className="parent-stat-card">
                     <div className="parent-stat-icon">⚽</div>
-
                     <div>
-                        <span>MY PLAYERS</span>
-                        <strong>{players.length}</strong>
+                        <span>My Players</span>
+                        <strong>{stats.players || 0}</strong>
+                        <small>Registered players</small>
+                    </div>
+                </div>
+
+                <div className="parent-stat-card">
+                    <div className="parent-stat-icon">✓</div>
+                    <div>
+                        <span>Active Players</span>
+                        <strong>{stats.active_players || 0}</strong>
+                        <small>Currently active</small>
                     </div>
                 </div>
 
                 <div className="parent-stat-card">
                     <div className="parent-stat-icon">▣</div>
-
                     <div>
-                        <span>UPCOMING TRAINING</span>
-                        <strong>0</strong>
-                    </div>
-                </div>
-
-                <div className="parent-stat-card">
-                    <div className="parent-stat-icon">$</div>
-
-                    <div>
-                        <span>PENDING PAYMENTS</span>
-                        <strong>0</strong>
+                        <span>Upcoming Training</span>
+                        <strong>{sessions.length}</strong>
+                        <small>Upcoming sessions</small>
                     </div>
                 </div>
 
                 <div className="parent-stat-card">
                     <div className="parent-stat-icon">◌</div>
-
                     <div>
-                        <span>NOTIFICATIONS</span>
-                        <strong>0</strong>
+                        <span>Notifications</span>
+                        <strong>{stats.unread_notifications || 0}</strong>
+                        <small>Unread updates</small>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section className="parent-dashboard-grid">
-                <div className="parent-panel">
-                    <div className="parent-panel-header">
+            <div className="parent-dashboard-main-grid">
+                <section className="parent-dashboard-section">
+                    <div className="parent-section-header">
                         <div>
-                            <span>PLAYER OVERVIEW</span>
+                            <span className="parent-section-eyebrow">
+                                FAMILY
+                            </span>
                             <h2>My Players</h2>
+                            <p>Your registered academy players</p>
                         </div>
-
-                        <button
-                            type="button"
-                            onClick={openAddPlayer}
-                        >
-                            Add Player
-                        </button>
                     </div>
 
-                    {loading && (
+                    {players.length === 0 ? (
                         <div className="parent-empty-state">
-                            <div className="parent-empty-icon">⏳</div>
-
-                            <h3>Loading players...</h3>
-
-                            <p>
-                                Please wait while we load your academy players.
-                            </p>
+                            No players registered yet.
                         </div>
-                    )}
-
-                    {!loading && error && (
-                        <div className="parent-empty-state">
-                            <div className="parent-empty-icon">!</div>
-
-                            <h3>Unable to load players</h3>
-
-                            <p>{error}</p>
-                        </div>
-                    )}
-
-                    {!loading && !error && players.length === 0 && (
-                        <div className="parent-empty-state">
-                            <div className="parent-empty-icon">⚽</div>
-
-                            <h3>No players yet</h3>
-
-                            <p>
-                                Add your first player to start managing their
-                                football academy journey.
-                            </p>
-
-                            <button
-                                type="button"
-                                onClick={openAddPlayer}
-                            >
-                                Add Player
-                            </button>
-                        </div>
-                    )}
-
-                    {!loading && !error && players.length > 0 && (
-                        <div className="parent-player-list">
+                    ) : (
+                        <div className="parent-players-grid">
                             {players.map((player) => (
                                 <div
                                     className="parent-player-card"
                                     key={player.id}
                                 >
                                     <div className="parent-player-avatar">
-                                        {player.first_name
-                                            ?.charAt(0)
-                                            ?.toUpperCase()}
+                                        {player.first_name?.charAt(0)}
+                                        {player.last_name?.charAt(0)}
                                     </div>
 
-                                    <div className="parent-player-main">
-                                        <div className="parent-player-heading">
-                                            <div>
-                                                <span className="parent-player-label">
-                                                    PLAYER
-                                                </span>
+                                    <div className="parent-player-info">
+                                        <h3>
+                                            {player.first_name}{' '}
+                                            {player.last_name}
+                                        </h3>
 
-                                                <h3>
-                                                    {player.first_name}{' '}
-                                                    {player.last_name}
-                                                </h3>
-                                            </div>
-
-                                            <span
-                                                className={`parent-player-status ${player.registration_status}`}
-                                            >
-                                                {player.registration_status}
-                                            </span>
+                                        <div className="parent-player-detail">
+                                            <span>Age Group</span>
+                                            <strong>
+                                                {player.age_group?.name ||
+                                                    'Not assigned'}
+                                            </strong>
                                         </div>
 
-                                        <div className="parent-player-details">
-                                            <div>
-                                                <span>AGE GROUP</span>
-
-                                                <strong>
-                                                    {player.age_group?.name ||
-                                                        'Not assigned'}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>POSITION</span>
-
-                                                <strong>
-                                                    {player.position
-                                                        ? player.position
-                                                              .charAt(0)
-                                                              .toUpperCase() +
-                                                          player.position.slice(
-                                                              1
-                                                          )
-                                                        : 'Not assigned'}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>LEVEL</span>
-
-                                                <strong>
-                                                    {player.level
-                                                        ? player.level
-                                                              .charAt(0)
-                                                              .toUpperCase() +
-                                                          player.level.slice(1)
-                                                        : 'Beginner'}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>COACH</span>
-
-                                                <strong>
-                                                    {player.coach?.full_name ||
-                                                        'Not assigned'}
-                                                </strong>
-                                            </div>
+                                        <div className="parent-player-detail">
+                                            <span>Position</span>
+                                            <strong>
+                                                {player.position
+                                                    ? player.position
+                                                    : 'Not assigned'}
+                                            </strong>
                                         </div>
+
+                                        <span
+                                            className={`parent-player-status ${player.registration_status}`}
+                                        >
+                                            {player.registration_status}
+                                        </span>
                                     </div>
-
-                                    <button
-                                        type="button"
-                                        className="parent-player-view"
-                                        onClick={() =>
-                                            handleViewProfile(player.id)
-                                        }
-                                    >
-                                        View Profile
-                                        <span>→</span>
-                                    </button>
                                 </div>
                             ))}
                         </div>
                     )}
-                </div>
+                </section>
 
-                <div className="parent-panel parent-quick-panel">
-                    <div className="parent-panel-header">
+                <section className="parent-dashboard-section">
+                    <div className="parent-section-header">
                         <div>
-                            <span>QUICK ACCESS</span>
-                            <h2>Academy Services</h2>
+                            <span className="parent-section-eyebrow">
+                                SCHEDULE
+                            </span>
+                            <h2>Upcoming Training</h2>
+                            <p>Next academy sessions</p>
                         </div>
                     </div>
 
-                    <div className="parent-quick-links">
-                        <button
-                            type="button"
-                            onClick={openAddPlayer}
-                        >
-                            <span>⚽</span>
-
-                            <div>
-                                <strong>My Players</strong>
-                                <small>Manage player profiles</small>
-                            </div>
-
-                            <b>→</b>
-                        </button>
-
-                        <button type="button">
-                            <span>▣</span>
-
-                            <div>
-                                <strong>Training</strong>
-                                <small>View upcoming sessions</small>
-                            </div>
-
-                            <b>→</b>
-                        </button>
-
-                        <button type="button">
-                            <span>$</span>
-
-                            <div>
-                                <strong>Payments</strong>
-                                <small>Check payment status</small>
-                            </div>
-
-                            <b>→</b>
-                        </button>
-
-                        <button type="button">
-                            <span>◌</span>
-
-                            <div>
-                                <strong>Notifications</strong>
-                                <small>View academy updates</small>
-                            </div>
-
-                            <b>→</b>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section className="parent-profile-card">
-                <div className="parent-profile-avatar">
-                    {user?.name?.charAt(0)?.toUpperCase() || 'P'}
-                </div>
-
-                <div className="parent-profile-info">
-                    <span>ACCOUNT</span>
-
-                    <h2>{user?.name}</h2>
-
-                    <p>{user?.email}</p>
-                </div>
-
-                <div className="parent-profile-role">
-                    <span>ACCOUNT TYPE</span>
-
-                    <strong>Parent</strong>
-                </div>
-            </section>
-
-            {selectedPlayer && (
-                <div className="parent-profile-overlay">
-                    <div className="parent-player-modal">
-                        <button
-                            type="button"
-                            className="parent-modal-close"
-                            onClick={closeProfile}
-                        >
-                            ×
-                        </button>
-
-                        <div className="parent-modal-top">
-                            <div className="parent-modal-avatar">
-                                {selectedPlayer.first_name
-                                    ?.charAt(0)
-                                    ?.toUpperCase()}
-                            </div>
-
-                            <div>
-                                <span>PLAYER PROFILE</span>
-
-                                <h2>
-                                    {selectedPlayer.first_name}{' '}
-                                    {selectedPlayer.last_name}
-                                </h2>
-
-                                <p>
-                                    {selectedPlayer.registration_status}
-                                </p>
-                            </div>
+                    {sessions.length === 0 ? (
+                        <div className="parent-empty-state">
+                            No upcoming training sessions.
                         </div>
-
-                        {profileError && (
-                            <div className="parent-modal-error">
-                                {profileError}
-                            </div>
-                        )}
-
-                        <div className="parent-modal-details">
-                            <div>
-                                <span>DATE OF BIRTH</span>
-
-                                <strong>
-                                    {selectedPlayer.date_of_birth ||
-                                        'Not available'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>AGE GROUP</span>
-
-                                <strong>
-                                    {selectedPlayer.age_group?.name ||
-                                        'Not assigned'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>POSITION</span>
-
-                                <strong>
-                                    {selectedPlayer.position
-                                        ? selectedPlayer.position
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                          selectedPlayer.position.slice(1)
-                                        : 'Not assigned'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>LEVEL</span>
-
-                                <strong>
-                                    {selectedPlayer.level
-                                        ? selectedPlayer.level
-                                              .charAt(0)
-                                              .toUpperCase() +
-                                          selectedPlayer.level.slice(1)
-                                        : 'Not assigned'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>COACH</span>
-
-                                <strong>
-                                    {selectedPlayer.coach?.full_name ||
-                                        'Not assigned'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>BRANCH</span>
-
-                                <strong>
-                                    {selectedPlayer.branch?.name ||
-                                        'Not assigned'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>CITY</span>
-
-                                <strong>
-                                    {selectedPlayer.city ||
-                                        'Not available'}
-                                </strong>
-                            </div>
-
-                            <div>
-                                <span>PHONE</span>
-
-                                <strong>
-                                    {selectedPlayer.phone ||
-                                        'Not available'}
-                                </strong>
-                            </div>
-                        </div>
-
-                        <button
-                            type="button"
-                            className="parent-modal-button"
-                            onClick={closeProfile}
-                        >
-                            Close Profile
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {showAddPlayer && (
-                <div className="parent-profile-overlay">
-                    <div className="parent-player-modal parent-add-player-modal">
-                        <button
-                            type="button"
-                            className="parent-modal-close"
-                            onClick={closeAddPlayer}
-                        >
-                            ×
-                        </button>
-
-                        <div className="parent-modal-heading">
-                            <span>PLAYER MANAGEMENT</span>
-
-                            <h2>Add New Player</h2>
-
-                            <p>
-                                Add a player to your academy account.
-                            </p>
-                        </div>
-
-                        {formError && (
-                            <div className="parent-modal-error">
-                                {formError}
-                            </div>
-                        )}
-
-                        <form
-                            className="parent-add-player-form"
-                            onSubmit={handleAddPlayer}
-                        >
-                            <div className="parent-form-grid">
-                                <div className="parent-form-field">
-                                    <label htmlFor="first_name">
-                                        First Name
-                                    </label>
-
-                                    <input
-                                        id="first_name"
-                                        name="first_name"
-                                        type="text"
-                                        value={form.first_name}
-                                        onChange={handleFormChange}
-                                        required
-                                        placeholder="Enter first name"
-                                    />
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="last_name">
-                                        Last Name
-                                    </label>
-
-                                    <input
-                                        id="last_name"
-                                        name="last_name"
-                                        type="text"
-                                        value={form.last_name}
-                                        onChange={handleFormChange}
-                                        required
-                                        placeholder="Enter last name"
-                                    />
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="date_of_birth">
-                                        Date of Birth
-                                    </label>
-
-                                    <input
-                                        id="date_of_birth"
-                                        name="date_of_birth"
-                                        type="date"
-                                        value={form.date_of_birth}
-                                        onChange={handleFormChange}
-                                        required
-                                    />
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="position">
-                                        Position
-                                    </label>
-
-                                    <select
-                                        id="position"
-                                        name="position"
-                                        value={form.position}
-                                        onChange={handleFormChange}
-                                    >
-                                        <option value="">
-                                            Select position
-                                        </option>
-                                        <option value="goalkeeper">
-                                            Goalkeeper
-                                        </option>
-                                        <option value="defender">
-                                            Defender
-                                        </option>
-                                        <option value="midfielder">
-                                            Midfielder
-                                        </option>
-                                        <option value="forward">
-                                            Forward
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="level">
-                                        Level
-                                    </label>
-
-                                    <select
-                                        id="level"
-                                        name="level"
-                                        value={form.level}
-                                        onChange={handleFormChange}
-                                    >
-                                        <option value="beginner">
-                                            Beginner
-                                        </option>
-                                        <option value="intermediate">
-                                            Intermediate
-                                        </option>
-                                        <option value="advanced">
-                                            Advanced
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="phone">
-                                        Phone
-                                    </label>
-
-                                    <input
-                                        id="phone"
-                                        name="phone"
-                                        type="text"
-                                        value={form.phone}
-                                        onChange={handleFormChange}
-                                        placeholder="Enter phone"
-                                    />
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="city">
-                                        City
-                                    </label>
-
-                                    <input
-                                        id="city"
-                                        name="city"
-                                        type="text"
-                                        value={form.city}
-                                        onChange={handleFormChange}
-                                        placeholder="Enter city"
-                                    />
-                                </div>
-
-                                <div className="parent-form-field">
-                                    <label htmlFor="address">
-                                        Address
-                                    </label>
-
-                                    <input
-                                        id="address"
-                                        name="address"
-                                        type="text"
-                                        value={form.address}
-                                        onChange={handleFormChange}
-                                        placeholder="Enter address"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="parent-form-actions">
-                                <button
-                                    type="button"
-                                    className="parent-form-cancel"
-                                    onClick={closeAddPlayer}
-                                    disabled={addingPlayer}
+                    ) : (
+                        <div className="parent-training-list">
+                            {sessions.map((session) => (
+                                <div
+                                    className="parent-training-item"
+                                    key={session.id}
                                 >
-                                    Cancel
-                                </button>
+                                    <div className="parent-training-date">
+                                        <strong>
+                                            {new Date(
+                                                `${session.session_date.slice(
+                                                    0,
+                                                    10
+                                                )}T00:00:00`
+                                            ).toLocaleDateString(undefined, {
+                                                day: 'numeric',
+                                            })}
+                                        </strong>
 
-                                <button
-                                    type="submit"
-                                    className="parent-form-submit"
-                                    disabled={addingPlayer}
+                                        <span>
+                                            {new Date(
+                                                `${session.session_date.slice(
+                                                    0,
+                                                    10
+                                                )}T00:00:00`
+                                            ).toLocaleDateString(undefined, {
+                                                month: 'short',
+                                            })}
+                                        </span>
+                                    </div>
+
+                                    <div className="parent-training-info">
+                                        <h3>{session.title}</h3>
+
+                                        <p>
+                                            {session.coach?.full_name ||
+                                                'Coach not assigned'}
+                                        </p>
+
+                                        <span>
+                                            {formatTime(session.start_time)} -{' '}
+                                            {formatTime(session.end_time)}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+            </div>
+
+            <div className="parent-dashboard-bottom-grid">
+                <section className="parent-dashboard-section">
+                    <div className="parent-section-header">
+                        <div>
+                            <span className="parent-section-eyebrow">
+                                FINANCE
+                            </span>
+                            <h2>Recent Payments</h2>
+                            <p>Your latest payment activity</p>
+                        </div>
+                    </div>
+
+                    {payments.length === 0 ? (
+                        <div className="parent-empty-state">
+                            No payment records found.
+                        </div>
+                    ) : (
+                        <div className="parent-payment-list">
+                            {payments.map((payment) => (
+                                <div
+                                    className="parent-payment-item"
+                                    key={payment.id}
                                 >
-                                    {addingPlayer
-                                        ? 'Adding Player...'
-                                        : 'Add Player'}
-                                </button>
+                                    <div className="parent-payment-main">
+                                        <strong>
+                                            {payment.payment_reference ||
+                                                `Payment #${payment.id}`}
+                                        </strong>
+
+                                        <span>
+                                            {payment.created_at
+                                                ? formatDate(
+                                                      payment.created_at
+                                                  )
+                                                : '-'}
+                                        </span>
+                                    </div>
+
+                                    <div className="parent-payment-right">
+                                        <strong>
+                                            {payment.amount} JOD
+                                        </strong>
+
+                                        <span
+                                            className={`parent-payment-status ${
+                                                payment.status || 'pending'
+                                            }`}
+                                        >
+                                            {payment.status || 'pending'}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+
+                <section className="parent-dashboard-section">
+                    <div className="parent-section-header">
+                        <div>
+                            <span className="parent-section-eyebrow">
+                                UPDATES
+                            </span>
+                            <h2>Notifications</h2>
+                            <p>Latest academy updates</p>
+                        </div>
+                    </div>
+
+                    {notifications.length === 0 ? (
+                        <div className="parent-empty-state">
+                            No notifications.
+                        </div>
+                    ) : (
+                        <div className="parent-notification-list">
+                            {notifications.map((notification) => (
+                                <div
+                                    className={`parent-notification-item ${
+                                        notification.is_read
+                                            ? ''
+                                            : 'unread'
+                                    }`}
+                                    key={notification.id}
+                                >
+                                    <div className="parent-notification-dot" />
+
+                                    <div className="parent-notification-content">
+                                        <h3>{notification.title}</h3>
+                                        <p>{notification.message}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+            </div>
+
+            <section className="parent-dashboard-section parent-offers-section">
+                <div className="parent-section-header">
+                    <div>
+                        <span className="parent-section-eyebrow">
+                            ACADEMY BENEFITS
+                        </span>
+                        <h2>Current Offers</h2>
+                        <p>Available academy offers and discounts</p>
+                    </div>
+                </div>
+
+                {offers.length === 0 ? (
+                    <div className="parent-empty-state">
+                        No active offers available.
+                    </div>
+                ) : (
+                    <div className="parent-offers-grid">
+                        {offers.map((offer) => (
+                            <div
+                                className="parent-offer-card"
+                                key={offer.id}
+                            >
+                                <div className="parent-offer-discount">
+                                    {Number(
+                                        offer.discount_percentage
+                                    ).toFixed(0)}
+                                    %
+                                </div>
+
+                                <div className="parent-offer-content">
+                                    <h3>{offer.title}</h3>
+
+                                    {offer.subtitle && (
+                                        <span>
+                                            {offer.subtitle}
+                                        </span>
+                                    )}
+
+                                    {offer.description && (
+                                        <p>
+                                            {offer.description}
+                                        </p>
+                                    )}
+
+                                    {offer.code && (
+                                        <div className="parent-offer-code">
+                                            {offer.code}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </form>
+                        ))}
                     </div>
-                </div>
-            )}
-
-            {profileLoading && (
-                <div className="parent-loading-overlay">
-                    <div className="parent-loading-box">
-                        <div className="parent-loading-spinner"></div>
-
-                        <span>Loading player profile...</span>
-                    </div>
-                </div>
-            )}
+                )}
+            </section>
         </div>
     );
 }
+
+export default ParentDashboard;

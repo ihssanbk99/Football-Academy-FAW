@@ -1,0 +1,260 @@
+.admin-transportation-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    color: #17241c;
+}
+
+.admin-transportation-header {
+    margin-bottom: 24px;
+}
+
+.admin-transportation-header span,
+.transportation-card-title span {
+    color: #c49a3d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.admin-transportation-header h1 {
+    margin: 7px 0 6px;
+    color: #123524;
+    font-size: 28px;
+}
+
+.admin-transportation-header p {
+    margin: 0;
+    color: #7d8781;
+    font-size: 12px;
+}
+
+.admin-transportation-success,
+.admin-transportation-error {
+    margin-bottom: 18px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-transportation-success {
+    background: #dcf3e3;
+    color: #16703a;
+}
+
+.admin-transportation-error {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.admin-transportation-loading {
+    padding: 60px 20px;
+    text-align: center;
+    color: #7d8781;
+    font-size: 13px;
+}
+
+.transportation-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.transportation-stats > div {
+    background: #ffffff;
+    border: 1px solid #e2e8e4;
+    border-radius: 13px;
+    padding: 16px;
+}
+
+.transportation-stats span {
+    display: block;
+    color: #8a938e;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.transportation-stats strong {
+    display: block;
+    margin-top: 6px;
+    color: #123524;
+    font-size: 23px;
+}
+
+.transportation-tabs {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.transportation-tabs button {
+    border: 1px solid #dfe6e1;
+    border-radius: 9px;
+    padding: 10px 17px;
+    background: #ffffff;
+    color: #69736d;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.transportation-tabs button.active {
+    background: #123524;
+    border-color: #123524;
+    color: #ffffff;
+}
+
+.transportation-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.transportation-card {
+    background: #ffffff;
+    border: 1px solid #e2e8e4;
+    border-radius: 17px;
+    padding: 22px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+}
+
+.transportation-card-title {
+    margin-bottom: 18px;
+}
+
+.transportation-card-title h2 {
+    margin: 5px 0 0;
+    color: #17241c;
+    font-size: 19px;
+}
+
+.transportation-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+}
+
+.transportation-form input,
+.transportation-form select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid #dfe6e1;
+    border-radius: 8px;
+    padding: 10px 11px;
+    background: #f8faf9;
+    color: #17241c;
+    font-size: 10px;
+    outline: none;
+}
+
+.transportation-form input:focus,
+.transportation-form select:focus {
+    border-color: #217346;
+}
+
+.transportation-form button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    background: #217346;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.transportation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.transportation-item {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr 1fr 0.7fr auto;
+    align-items: center;
+    gap: 15px;
+    background: #ffffff;
+    border: 1px solid #e2e8e4;
+    border-radius: 12px;
+    padding: 13px 15px;
+}
+
+.transportation-item > div {
+    min-width: 0;
+}
+
+.transportation-item span {
+    display: block;
+    color: #8a938e;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.transportation-item strong {
+    display: block;
+    color: #123524;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.danger-button {
+    border: none;
+    border-radius: 7px;
+    padding: 7px 10px;
+    background: #fde2e2;
+    color: #b33a3a;
+    font-size: 8px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .transportation-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .transportation-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .transportation-item {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-transportation-header h1 {
+        font-size: 23px;
+    }
+
+    .transportation-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .transportation-tabs {
+        overflow-x: auto;
+    }
+
+    .transportation-tabs button {
+        white-space: nowrap;
+    }
+
+    .transportation-form {
+        grid-template-columns: 1fr;
+    }
+
+    .transportation-item {
+        grid-template-columns: 1fr 1fr;
+    }
+}

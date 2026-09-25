@@ -1,0 +1,431 @@
+.admin-uniform-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    color: #17241c;
+}
+
+.admin-uniform-header {
+    margin-bottom: 24px;
+}
+
+.admin-uniform-header span,
+.admin-uniform-card-header span {
+    color: #c49a3d;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.admin-uniform-header h1 {
+    margin: 7px 0 6px;
+    color: #123524;
+    font-size: 28px;
+}
+
+.admin-uniform-header p {
+    margin: 0;
+    color: #7d8781;
+    font-size: 12px;
+}
+
+.admin-uniform-success,
+.admin-uniform-error {
+    margin-bottom: 18px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-uniform-success {
+    background: #dcf3e3;
+    color: #16703a;
+}
+
+.admin-uniform-error {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+.admin-uniform-loading {
+    padding: 45px 20px;
+    text-align: center;
+    color: #929c96;
+    font-size: 12px;
+}
+
+.admin-uniform-layout {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.admin-uniform-card {
+    background: #ffffff;
+    border: 1px solid #e2e8e4;
+    border-radius: 17px;
+    padding: 22px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+}
+
+.admin-uniform-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.admin-uniform-card-header h2 {
+    margin: 5px 0 0;
+    color: #17241c;
+    font-size: 19px;
+}
+
+.admin-uniform-card-header > strong {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 50%;
+    background: #e9f2ec;
+    color: #217346;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.uniform-size-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 640px;
+    gap: 0;
+}
+
+.uniform-size-box {
+    position: relative;
+    width: 100%;
+    height: 62px;
+    flex-shrink: 0;
+    border: 1px solid #dce5df;
+    border-radius: 11px;
+    background: #f8faf9;
+    color: #25352b;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 900;
+    transition: 0.2s ease;
+}
+
+.uniform-size-box:hover {
+    border-color: #217346;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(33, 115, 70, 0.1);
+}
+
+.uniform-size-box.selected {
+    background: #123524;
+    border-color: #123524;
+    color: #ffffff;
+    box-shadow: 0 7px 18px rgba(18, 53, 36, 0.18);
+}
+
+.uniform-size-box small {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    color: #c49a3d;
+    font-size: 10px;
+}
+
+.uniform-size-box.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.selection-preview {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 11px;
+    background: #f5f8f6;
+    border: 1px solid #e3eae5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.selection-preview span {
+    color: #8a938e;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.selection-preview strong {
+    color: #217346;
+    font-size: 13px;
+}
+
+.admin-number-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.admin-number-filter label {
+    color: #69736d;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-number-filter select {
+    flex: 1;
+    max-width: 230px;
+    border: 1px solid #dfe6e1;
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: #f8faf9;
+    color: #17241c;
+    font-size: 10px;
+    outline: none;
+}
+
+.jersey-number-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 62px);
+    gap: 9px;
+    justify-content: start;
+}
+
+.jersey-number-box {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    border: 1px solid #dce5df;
+    border-radius: 11px;
+    background: #f8faf9;
+    color: #25352b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    transition: 0.2s ease;
+}
+
+.jersey-number-box:hover:not(:disabled) {
+    border-color: #217346;
+    background: #eef6f1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(33, 115, 70, 0.1);
+}
+
+.jersey-number-box.selected {
+    background: #123524;
+    border-color: #123524;
+    color: #ffffff;
+    box-shadow: 0 7px 18px rgba(18, 53, 36, 0.18);
+}
+
+.jersey-number-box.selected b {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    color: #c49a3d;
+    font-size: 9px;
+}
+
+.jersey-number-box.used,
+.jersey-number-box.inactive,
+.jersey-number-box.not-configured {
+    background: #f0f1f1;
+    color: #a0a6a2;
+    border-color: #e1e3e2;
+}
+
+.jersey-number-box.used {
+    cursor: not-allowed;
+}
+
+.jersey-number-box.inactive {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.jersey-number-box.not-configured {
+    opacity: 0.42;
+}
+
+.jersey-number-box small {
+    position: absolute;
+    bottom: 5px;
+    font-size: 6px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.jersey-number-box.used small {
+    color: #b06d00;
+}
+
+.jersey-number-box.inactive small {
+    color: #777f7a;
+}
+
+.jersey-number-box.not-configured small {
+    color: #a0a6a2;
+}
+
+.admin-number-management {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #edf0ee;
+}
+
+.admin-number-add-form {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 7px;
+    margin-bottom: 13px;
+}
+
+.admin-number-add-form input,
+.admin-number-add-form select {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid #dfe6e1;
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: #f8faf9;
+    color: #17241c;
+    font-size: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.admin-number-add-form button {
+    border: none;
+    border-radius: 8px;
+    padding: 0 13px;
+    background: #217346;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-number-management-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.admin-number-management-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 7px;
+    border: 1px solid #e1e7e3;
+    border-radius: 7px;
+    background: #fafcfb;
+}
+
+.admin-number-management-item > span {
+    color: #123524;
+    font-size: 9px;
+    font-weight: 900;
+}
+
+.admin-number-management-item > small {
+    color: #8a938e;
+    font-size: 7px;
+}
+
+.admin-number-management-item button {
+    border: none;
+    border-radius: 5px;
+    padding: 4px 6px;
+    background: #e9f2ec;
+    color: #217346;
+    font-size: 7px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-number-management-item button:last-child {
+    background: #fde2e2;
+    color: #b33a3a;
+}
+
+@media (max-width: 1050px) {
+    .admin-uniform-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .uniform-size-grid {
+        min-height: 0;
+        gap: 9px;
+    }
+
+    .jersey-number-grid {
+        grid-template-columns: repeat(8, 62px);
+    }
+}
+
+@media (max-width: 700px) {
+    .admin-uniform-card {
+        padding: 18px;
+    }
+
+    .uniform-size-grid {
+        min-height: 0;
+        gap: 9px;
+    }
+
+    .jersey-number-grid {
+        grid-template-columns: repeat(6, 62px);
+        gap: 8px;
+    }
+
+    .admin-number-add-form {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-number-add-form button {
+        height: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-uniform-header h1 {
+        font-size: 23px;
+    }
+
+    .uniform-size-grid {
+        min-height: 0;
+        gap: 7px;
+    }
+
+    .uniform-size-box {
+        height: 54px;
+        font-size: 12px;
+    }
+
+    .jersey-number-grid {
+        grid-template-columns: repeat(4, 62px);
+        gap: 7px;
+    }
+
+    .jersey-number-box {
+        width: 62px;
+        height: 62px;
+        font-size: 12px;
+    }
+}
