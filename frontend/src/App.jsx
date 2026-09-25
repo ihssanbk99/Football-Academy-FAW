@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ParentDashboard from './pages/parent/ParentDashboard';
 import DashboardLayout from './layouts/DashboardLayout';
 import { useAuth } from './context/AuthContext';
 
@@ -58,7 +59,7 @@ export default function App() {
                     </ProtectedRoute>
                 }
             >
-                <Route path="/parent/dashboard" element={<DashboardHome />} />
+                <Route path="/parent/dashboard" element={<ParentDashboard />} />
             </Route>
 
             <Route
