@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\TrainingSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +21,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:parent')->group(function () {
         Route::apiResource('players', PlayerController::class);
+
+        Route::get('/training-sessions', [TrainingSessionController::class, 'index']);
+        Route::get('/training-sessions/{trainingSession}', [TrainingSessionController::class, 'show']);
+
+        Route::get('/payments', [PaymentController::class, 'index']);
+        Route::get('/payments/{payment}', [PaymentController::class, 'show']);
+        Route::post('/payments', [PaymentController::class, 'store']);
     });
 
     Route::middleware('role:admin')->get('/admin-test', function (Request $request) {
