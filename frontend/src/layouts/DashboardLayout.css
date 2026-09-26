@@ -265,6 +265,71 @@
     display: none;
 }
 
+.dashboard-admin {
+    --portal-primary: #7c3aed;
+    --portal-primary-dark: #5b21b6;
+    --portal-light: #f3e8ff;
+    --portal-border: #ddd6fe;
+    --portal-bg: #faf5ff;
+}
+
+.dashboard-coach {
+    --portal-primary: #0284c7;
+    --portal-primary-dark: #0369a1;
+    --portal-light: #e0f2fe;
+    --portal-border: #bae6fd;
+    --portal-bg: #f0f9ff;
+}
+
+.dashboard-admin .dashboard-sidebar,
+.dashboard-coach .dashboard-sidebar {
+    background: var(--portal-primary-dark);
+    scrollbar-color: rgba(255, 255, 255, 0.2) var(--portal-primary-dark);
+}
+
+.dashboard-admin .dashboard-sidebar::-webkit-scrollbar-track,
+.dashboard-coach .dashboard-sidebar::-webkit-scrollbar-track {
+    background: var(--portal-primary-dark);
+}
+
+.dashboard-admin .dashboard-brand-mark,
+.dashboard-coach .dashboard-brand-mark {
+    background: var(--portal-primary);
+}
+
+.dashboard-admin .dashboard-role span,
+.dashboard-coach .dashboard-role span {
+    color: var(--portal-primary);
+}
+
+.dashboard-admin .dashboard-nav-item.active,
+.dashboard-coach .dashboard-nav-item.active {
+    background: var(--portal-primary);
+}
+
+.dashboard-admin .dashboard-nav-item:hover,
+.dashboard-coach .dashboard-nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-admin .dashboard-header-title span,
+.dashboard-coach .dashboard-header-title span {
+    color: var(--portal-primary);
+}
+
+.dashboard-admin .dashboard-user-avatar,
+.dashboard-coach .dashboard-user-avatar {
+    background: var(--portal-light);
+    border-color: var(--portal-border);
+    color: var(--portal-primary-dark);
+}
+
+.dashboard-admin .dashboard-menu-button,
+.dashboard-coach .dashboard-menu-button {
+    border-color: var(--portal-border);
+    color: var(--portal-primary-dark);
+}
+
 @media (max-width: 900px) {
     .dashboard-sidebar {
         width: 255px;
@@ -324,6 +389,12 @@
         margin-left: 0;
         margin-right: 0;
         padding: 22px 18px;
+    }
+
+    .dashboard-admin .dashboard-menu-button,
+    .dashboard-coach .dashboard-menu-button {
+        color: var(--portal-primary-dark);
+        border-color: var(--portal-border);
     }
 }
 

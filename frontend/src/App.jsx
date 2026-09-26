@@ -32,6 +32,7 @@ import ParentPayments from './pages/parent/ParentPayments';
 import ParentOffers from './pages/parent/ParentOffers';
 import ParentNotifications from './pages/parent/ParentNotifications';
 import ParentAssessments from './pages/parent/ParentAssessments';
+import ParentAttendance from './pages/parent/ParentAttendance';
 
 import CoachAttendance from './pages/coach/CoachAttendance';
 import CoachAssessments from './pages/coach/CoachAssessments';
@@ -74,26 +75,33 @@ function App() {
                 <Route path="coaches" element={<AdminCoaches />} />
                 <Route path="age-groups" element={<AdminAgeGroups />} />
                 <Route path="training" element={<AdminTraining />} />
+
                 <Route
                     path="trial-bookings"
                     element={<AdminTrialBookings />}
                 />
+
                 <Route path="uniforms" element={<AdminUniforms />} />
+
                 <Route
                     path="transportation"
                     element={<AdminTransportation />}
                 />
+
                 <Route
                     path="attendance"
                     element={<AdminAttendance />}
                 />
+
                 <Route path="tracking" element={<AdminTracking />} />
                 <Route path="payments" element={<AdminPayments />} />
                 <Route path="offers" element={<AdminOffers />} />
+
                 <Route
                     path="assessments"
                     element={<AdminAssessments />}
                 />
+
                 <Route
                     path="notifications"
                     element={<AdminNotifications />}
@@ -109,26 +117,40 @@ function App() {
                 }
             >
                 <Route path="dashboard" element={<ParentDashboard />} />
+
                 <Route
                     path="register-player"
                     element={<RegisterPlayer />}
                 />
+
                 <Route path="players" element={<ParentPlayers />} />
+
                 <Route
                     path="training"
                     element={<ParentTraining />}
                 />
+
                 <Route
                     path="trial-booking"
                     element={<ParentTrialBooking />}
                 />
+
+                <Route
+                    path="attendance"
+                    element={<ParentAttendance />}
+                />
+
                 <Route path="tracking" element={<ParentTracking />} />
+
                 <Route path="payments" element={<ParentPayments />} />
+
                 <Route path="offers" element={<ParentOffers />} />
+
                 <Route
                     path="assessments"
                     element={<ParentAssessments />}
                 />
+
                 <Route
                     path="notifications"
                     element={<ParentNotifications />}
@@ -147,6 +169,7 @@ function App() {
                     path="attendance"
                     element={<CoachAttendance />}
                 />
+
                 <Route
                     path="assessments"
                     element={<CoachAssessments />}

@@ -9,6 +9,7 @@ function AdminAttendance() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     const [form, setForm] = useState({
         training_session_id: '',
@@ -22,19 +23,33 @@ function AdminAttendance() {
             setLoading(true);
             setError('');
 
-            const [attendanceResponse, sessionsResponse, playersResponse] = await Promise.all([
+            const [
+                attendanceResponse,
+                sessionsResponse,
+                playersResponse,
+            ] = await Promise.all([
                 api.get('/admin/attendance'),
                 api.get('/admin/training'),
                 api.get('/admin/players'),
             ]);
 
-            setAttendances(attendanceResponse.data.attendances || []);
-            setSessions(sessionsResponse.data.sessions || sessionsResponse.data.training_sessions || []);
-            setPlayers(playersResponse.data.players || []);
+            setAttendances(
+                attendanceResponse.data.attendances || []
+            );
+
+            setSessions(
+                sessionsResponse.data.sessions ||
+                    sessionsResponse.data.training_sessions ||
+                    []
+            );
+
+            setPlayers(
+                playersResponse.data.players || []
+            );
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                'Unable to load attendance data.'
+                    'Unable to load attendance data.'
             );
         } finally {
             setLoading(false);
@@ -46,25 +61,36 @@ function AdminAttendance() {
     }, []);
 
     const handleChange = (event) => {
-        setForm({
-            ...form,
+        setForm((current) => ({
+            ...current,
             [event.target.name]: event.target.value,
-        });
+        }));
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!form.training_session_id || !form.player_id) {
-            setError('Please select a training session and player.');
+            setError(
+                'Please select a training session and player.'
+            );
+            setSuccess('');
             return;
         }
 
         try {
             setSaving(true);
             setError('');
+            setSuccess('');
 
-            await api.post('/admin/attendance', form);
+            await api.post('/admin/attendance', {
+                training_session_id: Number(
+                    form.training_session_id
+                ),
+                player_id: Number(form.player_id),
+                status: form.status,
+                notes: form.notes || null,
+            });
 
             setForm({
                 training_session_id: '',
@@ -73,53 +99,94 @@ function AdminAttendance() {
                 notes: '',
             });
 
+            setSuccess('Attendance saved successfully.');
+
             await loadData();
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                Object.values(err.response?.data?.errors || {})?.[0]?.[0] ||
-                'Unable to save attendance.'
+                    Object.values(
+                        err.response?.data?.errors || {}
+                    )
+                        .flat()
+                        .join(' ') ||
+                    'Unable to save attendance.'
             );
+            setSuccess('');
         } finally {
             setSaving(false);
         }
     };
 
-    const handleStatusChange = async (attendance, status) => {
+    const handleStatusChange = async (
+        attendance,
+        status
+    ) => {
         try {
             setError('');
+            setSuccess('');
 
-            await api.patch(`/admin/attendance/${attendance.id}`, {
-                status,
-                notes: attendance.notes || '',
-            });
+            await api.patch(
+                `/admin/attendance/${attendance.id}`,
+                {
+                    status,
+                    notes: attendance.notes || null,
+                }
+            );
+
+            setSuccess('Attendance status updated successfully.');
 
             await loadData();
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                'Unable to update attendance.'
+                    'Unable to update attendance.'
             );
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this attendance record?')) {
+        if (
+            !window.confirm(
+                'Are you sure you want to delete this attendance record?'
+            )
+        ) {
             return;
         }
 
         try {
             setError('');
+            setSuccess('');
 
-            await api.delete(`/admin/attendance/${id}`);
+            await api.delete(
+                `/admin/attendance/${id}`
+            );
+
+            setSuccess('Attendance record deleted successfully.');
 
             await loadData();
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-                'Unable to delete attendance.'
+                    'Unable to delete attendance.'
             );
         }
+    };
+
+    const getStatusLabel = (status) => {
+        if (status === 'present') {
+            return 'Present';
+        }
+
+        if (status === 'absent') {
+            return 'Absent';
+        }
+
+        if (status === 'late') {
+            return 'Late';
+        }
+
+        return status;
     };
 
     if (loading) {
@@ -137,7 +204,11 @@ function AdminAttendance() {
             <div className="admin-attendance-header">
                 <div>
                     <h1>Attendance</h1>
-                    <p>Manage player attendance for training sessions.</p>
+
+                    <p>
+                        Manage player attendance for training
+                        sessions.
+                    </p>
                 </div>
             </div>
 
@@ -147,22 +218,40 @@ function AdminAttendance() {
                 </div>
             )}
 
+            {success && (
+                <div className="admin-attendance-success">
+                    {success}
+                </div>
+            )}
+
             <div className="admin-attendance-form-card">
                 <h2>Record Attendance</h2>
 
                 <form onSubmit={handleSubmit}>
                     <div className="admin-attendance-form-grid">
                         <div className="admin-attendance-field">
-                            <label>Training Session</label>
+                            <label>
+                                Training Session
+                            </label>
+
                             <select
                                 name="training_session_id"
-                                value={form.training_session_id}
+                                value={
+                                    form.training_session_id
+                                }
                                 onChange={handleChange}
                             >
-                                <option value="">Select session</option>
+                                <option value="">
+                                    Select session
+                                </option>
+
                                 {sessions.map((session) => (
-                                    <option key={session.id} value={session.id}>
-                                        {session.title} - {session.session_date}
+                                    <option
+                                        key={session.id}
+                                        value={session.id}
+                                    >
+                                        {session.title} -{' '}
+                                        {session.session_date}
                                     </option>
                                 ))}
                             </select>
@@ -170,15 +259,23 @@ function AdminAttendance() {
 
                         <div className="admin-attendance-field">
                             <label>Player</label>
+
                             <select
                                 name="player_id"
                                 value={form.player_id}
                                 onChange={handleChange}
                             >
-                                <option value="">Select player</option>
+                                <option value="">
+                                    Select player
+                                </option>
+
                                 {players.map((player) => (
-                                    <option key={player.id} value={player.id}>
-                                        {player.first_name} {player.last_name}
+                                    <option
+                                        key={player.id}
+                                        value={player.id}
+                                    >
+                                        {player.first_name}{' '}
+                                        {player.last_name}
                                     </option>
                                 ))}
                             </select>
@@ -186,19 +283,29 @@ function AdminAttendance() {
 
                         <div className="admin-attendance-field">
                             <label>Status</label>
+
                             <select
                                 name="status"
                                 value={form.status}
                                 onChange={handleChange}
                             >
-                                <option value="present">Present</option>
-                                <option value="absent">Absent</option>
-                                <option value="late">Late</option>
+                                <option value="present">
+                                    Present
+                                </option>
+
+                                <option value="absent">
+                                    Absent
+                                </option>
+
+                                <option value="late">
+                                    Late
+                                </option>
                             </select>
                         </div>
 
                         <div className="admin-attendance-field">
                             <label>Notes</label>
+
                             <input
                                 type="text"
                                 name="notes"
@@ -214,7 +321,9 @@ function AdminAttendance() {
                         className="admin-attendance-submit"
                         disabled={saving}
                     >
-                        {saving ? 'Saving...' : 'Save Attendance'}
+                        {saving
+                            ? 'Saving...'
+                            : 'Save Attendance'}
                     </button>
                 </form>
             </div>
@@ -222,7 +331,10 @@ function AdminAttendance() {
             <div className="admin-attendance-table-card">
                 <div className="admin-attendance-table-header">
                     <h2>Attendance Records</h2>
-                    <span>{attendances.length} records</span>
+
+                    <span>
+                        {attendances.length} records
+                    </span>
                 </div>
 
                 {attendances.length === 0 ? (
@@ -246,63 +358,118 @@ function AdminAttendance() {
                             </thead>
 
                             <tbody>
-                                {attendances.map((attendance) => (
-                                    <tr key={attendance.id}>
-                                        <td>
-                                            {attendance.player?.first_name}{' '}
-                                            {attendance.player?.last_name}
-                                        </td>
+                                {attendances.map(
+                                    (attendance) => (
+                                        <tr
+                                            key={
+                                                attendance.id
+                                            }
+                                        >
+                                            <td>
+                                                <strong>
+                                                    {
+                                                        attendance
+                                                            .player
+                                                            ?.first_name
+                                                    }{' '}
+                                                    {
+                                                        attendance
+                                                            .player
+                                                            ?.last_name
+                                                    }
+                                                </strong>
+                                            </td>
 
-                                        <td>
-                                            {attendance.trainingSession?.title || '-'}
-                                        </td>
+                                            <td>
+                                                {attendance
+                                                    .trainingSession
+                                                    ?.title ||
+                                                    '-'}
+                                            </td>
 
-                                        <td>
-                                            {attendance.trainingSession?.session_date || '-'}
-                                        </td>
+                                            <td>
+                                                {attendance
+                                                    .trainingSession
+                                                    ?.session_date ||
+                                                    '-'}
+                                            </td>
 
-                                        <td>
-                                            {attendance.trainingSession?.ageGroup?.name || '-'}
-                                        </td>
+                                            <td>
+                                                {attendance
+                                                    .trainingSession
+                                                    ?.ageGroup
+                                                    ?.name ||
+                                                    '-'}
+                                            </td>
 
-                                        <td>
-                                            {attendance.trainingSession?.coach?.full_name || '-'}
-                                        </td>
+                                            <td>
+                                                {attendance
+                                                    .trainingSession
+                                                    ?.coach
+                                                    ?.full_name ||
+                                                    '-'}
+                                            </td>
 
-                                        <td>
-                                            <select
-                                                className={`attendance-status-select ${attendance.status}`}
-                                                value={attendance.status}
-                                                onChange={(event) =>
-                                                    handleStatusChange(
-                                                        attendance,
-                                                        event.target.value
-                                                    )
-                                                }
-                                            >
-                                                <option value="present">Present</option>
-                                                <option value="absent">Absent</option>
-                                                <option value="late">Late</option>
-                                            </select>
-                                        </td>
+                                            <td>
+                                                <div
+                                                    className={`attendance-status-badge ${attendance.status}`}
+                                                >
+                                                    {getStatusLabel(
+                                                        attendance.status
+                                                    )}
+                                                </div>
 
-                                        <td>
-                                            {attendance.notes || '-'}
-                                        </td>
+                                                <select
+                                                    className={`attendance-status-select ${attendance.status}`}
+                                                    value={
+                                                        attendance.status
+                                                    }
+                                                    onChange={(
+                                                        event
+                                                    ) =>
+                                                        handleStatusChange(
+                                                            attendance,
+                                                            event
+                                                                .target
+                                                                .value
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="present">
+                                                        Present
+                                                    </option>
 
-                                        <td>
-                                            <button
-                                                type="button"
-                                                className="admin-attendance-delete"
-                                                onClick={() =>
-                                                    handleDelete(attendance.id)
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                    <option value="absent">
+                                                        Absent
+                                                    </option>
+
+                                                    <option value="late">
+                                                        Late
+                                                    </option>
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                {attendance.notes ||
+                                                    '-'}
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="admin-attendance-delete"
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            attendance.id
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
                             </tbody>
                         </table>
                     </div>

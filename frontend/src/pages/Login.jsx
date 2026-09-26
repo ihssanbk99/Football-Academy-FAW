@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './Auth.css';
+import './Login.css';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -38,20 +38,20 @@ export default function Login() {
     };
 
     return (
-        <div className="auth-page">
-            <div className="auth-background-shape auth-shape-one"></div>
-            <div className="auth-background-shape auth-shape-two"></div>
+        <div className="login-page">
+            <div className="login-background-shape login-shape-one"></div>
+            <div className="login-background-shape login-shape-two"></div>
 
-            <div className="auth-container">
-                <div className="auth-visual">
-                    <div className="auth-visual-overlay"></div>
+            <div className="login-container">
+                <div className="login-visual">
+                    <div className="login-visual-overlay"></div>
 
-                    <div className="auth-visual-content">
-                        <div className="academy-mark">
+                    <div className="login-visual-content">
+                        <div className="login-academy-mark">
                             <span>⚽</span>
                         </div>
 
-                        <span className="auth-eyebrow">
+                        <span className="login-eyebrow">
                             FOOTBALL ACADEMY
                         </span>
 
@@ -66,7 +66,7 @@ export default function Login() {
                             coaches and academy development.
                         </p>
 
-                        <div className="auth-features">
+                        <div className="login-features">
                             <div>
                                 <strong>01</strong>
                                 <span>Player Development</span>
@@ -85,16 +85,16 @@ export default function Login() {
                     </div>
                 </div>
 
-                <div className="auth-form-section">
-                    <div className="auth-form-wrapper">
-                        <div className="auth-mobile-logo">
-                            <div className="academy-mark">
+                <div className="login-form-section">
+                    <div className="login-form-wrapper">
+                        <div className="login-mobile-logo">
+                            <div className="login-academy-mark">
                                 <span>⚽</span>
                             </div>
                             <span>FAW</span>
                         </div>
 
-                        <div className="auth-heading">
+                        <div className="login-heading">
                             <span>WELCOME BACK</span>
                             <h2>Sign in to your account</h2>
                             <p>
@@ -104,20 +104,20 @@ export default function Login() {
                         </div>
 
                         {error && (
-                            <div className="auth-error">
+                            <div className="login-error">
                                 <span>!</span>
                                 <p>{error}</p>
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="auth-form">
-                            <div className="auth-field">
+                        <form onSubmit={handleSubmit} className="login-form">
+                            <div className="login-field">
                                 <label htmlFor="email">
                                     Email Address
                                 </label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">
+                                <div className="login-input-wrapper">
+                                    <span className="login-input-icon">
                                         ✉
                                     </span>
 
@@ -134,13 +134,13 @@ export default function Login() {
                                 </div>
                             </div>
 
-                            <div className="auth-field">
+                            <div className="login-field">
                                 <label htmlFor="password">
                                     Password
                                 </label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">
+                                <div className="login-input-wrapper">
+                                    <span className="login-input-icon">
                                         ●
                                     </span>
 
@@ -159,7 +159,7 @@ export default function Login() {
 
                             <button
                                 type="submit"
-                                className="auth-submit"
+                                className="login-submit"
                                 disabled={loading}
                             >
                                 <span>
@@ -169,12 +169,12 @@ export default function Login() {
                                 </span>
 
                                 {!loading && (
-                                    <span className="auth-arrow">→</span>
+                                    <span className="login-arrow">→</span>
                                 )}
                             </button>
                         </form>
 
-                        <div className="auth-divider">
+                        <div className="login-divider">
                             <span></span>
                             <p>NEW TO FAW?</p>
                             <span></span>
@@ -182,13 +182,13 @@ export default function Login() {
 
                         <Link
                             to="/register"
-                            className="auth-register"
+                            className="login-register"
                         >
                             Create a Parent Account
                             <span>→</span>
                         </Link>
 
-                        <p className="auth-footer">
+                        <p className="login-footer">
                             FAW Football Academy Management System
                         </p>
                     </div>

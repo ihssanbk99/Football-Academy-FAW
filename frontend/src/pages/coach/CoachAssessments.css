@@ -1,98 +1,152 @@
 .coach-assessments-page {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1280px;
     margin: 0 auto;
+    padding-bottom: 40px;
 }
 
 .coach-assessments-header {
-    padding: 30px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #102a43, #1f4e79);
+    position: relative;
+    overflow: hidden;
+    padding: 34px 36px;
+    margin-bottom: 26px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #0b2d4d 0%, #075985 55%, #0284c7 100%);
     color: #ffffff;
-    margin-bottom: 24px;
+    box-shadow: 0 12px 30px rgba(3, 105, 161, 0.18);
+}
+
+.coach-assessments-header::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -70px;
+    top: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.coach-assessments-header::before {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    right: 110px;
+    bottom: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .coach-assessments-eyebrow {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    opacity: 0.75;
-    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 6px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .coach-assessments-header h1 {
-    margin: 0 0 8px;
-    font-size: 30px;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .coach-assessments-header p {
-    margin: 0;
-    opacity: 0.88;
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .coach-assessments-message {
-    padding: 14px 18px;
-    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    box-sizing: border-box;
+    padding: 12px 16px;
     margin-bottom: 18px;
+    border-radius: 12px;
     font-size: 14px;
+    font-weight: 600;
 }
 
 .coach-assessments-message.error {
-    background: #fff1f1;
-    color: #b42318;
-    border: 1px solid #ffd2d2;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
 }
 
 .coach-assessments-message.success {
-    background: #edf9f1;
-    color: #18753d;
-    border: 1px solid #c8ecd4;
+    background: #e0f2fe;
+    color: #075985;
+    border: 1px solid #bae6fd;
 }
 
 .coach-assessments-form-card,
 .coach-assessments-table-card {
-    background: #ffffff;
-    border: 1px solid #e7edf3;
-    border-radius: 18px;
     margin-bottom: 24px;
     overflow: hidden;
+    border: 1px solid #dbeafe;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 6px 22px rgba(3, 105, 161, 0.06);
 }
 
 .coach-assessments-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    padding: 20px 22px;
-    border-bottom: 1px solid #edf1f4;
+    gap: 18px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #dbeafe;
+    background: #f8fbff;
 }
 
 .coach-assessments-card-header h2 {
     margin: 0;
-    color: #102a43;
-    font-size: 20px;
+    color: #0c4a6e;
+    font-size: 19px;
+    font-weight: 800;
 }
 
 .coach-assessments-form {
-    padding: 22px;
+    padding: 26px 24px 24px;
 }
 
 .coach-assessments-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
+    gap: 20px;
 }
 
 .coach-assessments-field {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    min-width: 0;
+    gap: 8px;
 }
 
 .coach-assessments-field label {
-    color: #334e68;
-    font-size: 13px;
-    font-weight: 700;
+    color: #075985;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
 }
 
 .coach-assessments-field input,
@@ -100,23 +154,37 @@
 .coach-assessments-field textarea {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #d7e0e8;
-    border-radius: 9px;
-    padding: 11px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 12px 13px;
     background: #ffffff;
-    color: #102a43;
+    color: #0c4a6e;
     font-family: inherit;
+    font-size: 14px;
     outline: none;
+    transition: 0.2s ease;
+}
+
+.coach-assessments-field input,
+.coach-assessments-field select {
+    height: 44px;
+}
+
+.coach-assessments-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.coach-assessments-field input::placeholder,
+.coach-assessments-field textarea::placeholder {
+    color: #93a4b8;
 }
 
 .coach-assessments-field input:focus,
 .coach-assessments-field select:focus,
 .coach-assessments-field textarea:focus {
-    border-color: #1f4e79;
-}
-
-.coach-assessments-field textarea {
-    resize: vertical;
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
 }
 
 .coach-assessments-full {
@@ -124,133 +192,197 @@
 }
 
 .coach-assessments-save {
-    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    height: 44px;
+    margin-top: 24px;
+    padding: 0 22px;
     border: none;
-    border-radius: 9px;
-    padding: 12px 22px;
-    background: #1f4e79;
+    border-radius: 10px;
+    background: #0284c7;
     color: #ffffff;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 800;
     cursor: pointer;
+    box-shadow: 0 6px 14px rgba(2, 132, 199, 0.18);
+    transition: 0.2s ease;
 }
 
 .coach-assessments-save:hover {
-    background: #163b5d;
+    background: #0369a1;
+    transform: translateY(-1px);
 }
 
 .coach-assessments-save:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
 }
 
 .coach-assessments-cancel {
-    border: 1px solid #d7e0e8;
-    border-radius: 8px;
-    padding: 8px 14px;
-    background: #ffffff;
-    color: #506273;
-    cursor: pointer;
-}
-
-.coach-assessments-count {
-    min-width: 30px;
-    height: 30px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: #edf5fb;
-    color: #1f4e79;
+    height: 40px;
+    padding: 0 15px;
+    border: 1px solid #bfdbfe;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #075985;
+    font-size: 13px;
     font-weight: 700;
+    cursor: pointer;
+}
+
+.coach-assessments-cancel:hover {
+    background: #eff6ff;
+}
+
+.coach-assessments-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 30px;
+    padding: 0 9px;
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    background: #e0f2fe;
+    color: #075985;
+    font-size: 12px;
+    font-weight: 800;
 }
 
 .coach-assessments-table-wrapper {
+    width: 100%;
     overflow-x: auto;
 }
 
 .coach-assessments-table {
     width: 100%;
-    min-width: 950px;
-    border-collapse: collapse;
+    min-width: 1080px;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 .coach-assessments-table th {
     padding: 14px 16px;
     text-align: left;
-    background: #f7f9fb;
-    color: #506273;
-    font-size: 13px;
-    border-bottom: 1px solid #e7edf3;
+    background: #eff6ff;
+    color: #075985;
+    border-bottom: 1px solid #dbeafe;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .coach-assessments-table td {
     padding: 16px;
-    color: #506273;
-    border-bottom: 1px solid #edf1f4;
-    vertical-align: top;
-    line-height: 1.5;
+    color: #334e68;
+    border-bottom: 1px solid #eff6ff;
+    font-size: 13px;
+    line-height: 1.55;
+    vertical-align: middle;
+}
+
+.coach-assessments-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.coach-assessments-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .coach-assessments-table td strong {
-    color: #102a43;
+    display: block;
+    color: #0c4a6e;
+    font-size: 13px;
+    font-weight: 800;
 }
 
 .coach-assessment-score {
-    width: 34px;
-    height: 34px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: #edf5fb;
-    color: #1f4e79;
-    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    box-sizing: border-box;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    background: #e0f2fe;
+    color: #075985;
+    font-size: 13px;
+    font-weight: 900;
 }
 
 .coach-assessment-actions {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 7px;
 }
 
 .coach-assessment-edit,
 .coach-assessment-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0 11px;
     border: none;
-    border-radius: 7px;
-    padding: 8px 11px;
-    font-weight: 700;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
     cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .coach-assessment-edit {
-    background: #edf5fb;
-    color: #1f4e79;
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.coach-assessment-edit:hover {
+    background: #bae6fd;
 }
 
 .coach-assessment-delete {
-    background: #fff1f1;
-    color: #b42318;
+    background: #dbeafe;
+    color: #1e3a8a;
+}
+
+.coach-assessment-delete:hover {
+    background: #bfdbfe;
 }
 
 .coach-assessments-empty,
 .coach-assessments-loading {
-    padding: 45px 25px;
+    padding: 60px 25px;
     text-align: center;
-    color: #66788a;
+    color: #64748b;
+    font-size: 14px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
     .coach-assessments-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
     .coach-assessments-header {
-        padding: 24px;
+        padding: 26px 22px;
     }
 
     .coach-assessments-header h1 {
-        font-size: 26px;
+        font-size: 27px;
+    }
+
+    .coach-assessments-form {
+        padding: 20px 18px;
     }
 
     .coach-assessments-grid {
@@ -261,7 +393,40 @@
         grid-column: auto;
     }
 
+    .coach-assessments-save {
+        width: 100%;
+    }
+
+    .coach-assessments-table {
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 480px) {
+    .coach-assessments-header {
+        padding: 22px 18px;
+    }
+
+    .coach-assessments-header h1 {
+        font-size: 24px;
+    }
+
     .coach-assessments-form {
-        padding: 18px;
+        padding: 18px 15px;
+    }
+
+    .coach-assessments-table th,
+    .coach-assessments-table td {
+        padding: 13px 12px;
+    }
+
+    .coach-assessment-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .coach-assessment-edit,
+    .coach-assessment-delete {
+        width: 100%;
     }
 }

@@ -150,8 +150,39 @@ class AttendanceController extends Controller
             ->latest()
             ->get();
 
+        $players = Player::where('academy_id', 1)
+            ->where('coach_id', $coach->id)
+            ->where('registration_status', 'active')
+            ->with('ageGroup:id,name')
+            ->select([
+                'id',
+                'first_name',
+                'last_name',
+                'age_group_id',
+            ])
+            ->orderBy('first_name')
+            ->get();
+
+        $trainingSessions = TrainingSession::where('academy_id', 1)
+            ->where('coach_id', $coach->id)
+            ->where('is_active', true)
+            ->with('ageGroup:id,name')
+            ->orderByDesc('session_date')
+            ->orderBy('start_time')
+            ->get([
+                'id',
+                'title',
+                'session_date',
+                'start_time',
+                'end_time',
+                'age_group_id',
+                'coach_id',
+            ]);
+
         return response()->json([
             'attendances' => $attendances,
+            'players' => $players,
+            'training_sessions' => $trainingSessions,
         ]);
     }
 

@@ -10,7 +10,7 @@
     gap: 30px;
     padding: 34px;
     border-radius: 24px;
-    background: linear-gradient(135deg, #123c2f, #1d5a45);
+    background: linear-gradient(135deg, #4c1d95, #7c3aed);
     color: #fff;
     margin-bottom: 24px;
 }
@@ -18,7 +18,7 @@
 .admin-dashboard-welcome span {
     display: block;
     margin-bottom: 10px;
-    color: #d8b56a;
+    color: #ddd6fe;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 2px;
@@ -31,7 +31,7 @@
 
 .admin-dashboard-welcome p {
     margin: 0;
-    color: #dce9e3;
+    color: #ede9fe;
     font-size: 15px;
 }
 
@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(216, 181, 106, 0.5);
+    border: 1px solid rgba(221, 214, 254, 0.5);
     border-radius: 24px;
     background: rgba(255, 255, 255, 0.08);
     font-size: 38px;
@@ -57,17 +57,17 @@
 .admin-dashboard-stat-card {
     position: relative;
     padding: 22px;
-    border: 1px solid #e8e5dc;
+    border: 1px solid #e9d5ff;
     border-radius: 18px;
     background: #fff;
-    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
+    box-shadow: 0 8px 25px rgba(76, 29, 149, 0.06);
     text-decoration: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .admin-dashboard-stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 14px 32px rgba(18, 60, 47, 0.1);
+    box-shadow: 0 14px 32px rgba(76, 29, 149, 0.12);
 }
 
 .admin-dashboard-stat-icon {
@@ -78,15 +78,15 @@
     justify-content: center;
     margin-bottom: 17px;
     border-radius: 13px;
-    background: #edf2ef;
-    color: #123c2f;
+    background: #f3e8ff;
+    color: #6d28d9;
     font-size: 19px;
 }
 
 .admin-dashboard-stat-card > span {
     display: block;
     margin-bottom: 5px;
-    color: #858b87;
+    color: #85808d;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1.3px;
@@ -94,14 +94,14 @@
 
 .admin-dashboard-stat-card > strong {
     display: block;
-    color: #123c2f;
+    color: #4c1d95;
     font-size: 31px;
 }
 
 .admin-dashboard-stat-card small {
     display: block;
     margin-top: 5px;
-    color: #969b98;
+    color: #96919c;
     font-size: 11px;
 }
 
@@ -113,7 +113,8 @@
     padding: 20px 24px;
     margin-bottom: 24px;
     border-radius: 18px;
-    background: #f3eee2;
+    background: #f5f3ff;
+    border: 1px solid #e9d5ff;
 }
 
 .admin-dashboard-finance div {
@@ -123,14 +124,14 @@
 }
 
 .admin-dashboard-finance div span {
-    color: #857c6b;
+    color: #766d86;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 1.2px;
 }
 
 .admin-dashboard-finance div strong {
-    color: #123c2f;
+    color: #4c1d95;
     font-size: 20px;
 }
 
@@ -138,11 +139,18 @@
     padding: 10px 15px;
     border-radius: 10px;
     background: #fff;
-    color: #315a4b;
+    color: #6d28d9;
+    border: 1px solid #ddd6fe;
     font-size: 11px;
     font-weight: 800;
     text-align: center;
     text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.admin-dashboard-finance a:hover {
+    background: #f3e8ff;
+    color: #5b21b6;
 }
 
 .admin-dashboard-columns {
@@ -155,10 +163,10 @@
 .admin-dashboard-panel {
     min-width: 0;
     padding: 25px;
-    border: 1px solid #e8e5dc;
+    border: 1px solid #e9d5ff;
     border-radius: 22px;
     background: #fff;
-    box-shadow: 0 8px 25px rgba(18, 60, 47, 0.06);
+    box-shadow: 0 8px 25px rgba(76, 29, 149, 0.06);
 }
 
 .admin-dashboard-panel-header {
@@ -172,7 +180,7 @@
 .admin-dashboard-panel-header span {
     display: block;
     margin-bottom: 6px;
-    color: #a37b30;
+    color: #7c3aed;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 1.4px;
@@ -180,12 +188,12 @@
 
 .admin-dashboard-panel-header h2 {
     margin: 0;
-    color: #123c2f;
+    color: #4c1d95;
     font-size: 22px;
 }
 
 .admin-dashboard-panel-header a {
-    color: #a37b30;
+    color: #7c3aed;
     font-size: 11px;
     font-weight: 800;
     text-decoration: none;
@@ -204,7 +212,7 @@
     gap: 12px;
     padding: 13px;
     border-radius: 13px;
-    background: #faf9f5;
+    background: #faf8ff;
 }
 
 .admin-dashboard-player-avatar {
@@ -215,7 +223,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: #123c2f;
+    background: #6d28d9;
     color: #fff;
     font-weight: 800;
 }
@@ -227,14 +235,14 @@
 
 .admin-dashboard-player > div:nth-child(2) strong {
     display: block;
-    color: #35443e;
+    color: #3f374a;
     font-size: 12px;
 }
 
 .admin-dashboard-player > div:nth-child(2) span {
     display: block;
     margin-top: 3px;
-    color: #929793;
+    color: #92909a;
     font-size: 10px;
 }
 
@@ -246,15 +254,15 @@
 }
 
 .admin-dashboard-player-meta strong {
-    color: #315a4b;
+    color: #6d28d9;
     font-size: 10px;
 }
 
 .admin-dashboard-player-meta span {
     padding: 4px 7px;
     border-radius: 8px;
-    background: #e4f3e9;
-    color: #287043;
+    background: #ede9fe;
+    color: #6d28d9;
     font-size: 8px;
     font-weight: 800;
     text-transform: capitalize;
@@ -266,7 +274,7 @@
     gap: 12px;
     padding: 13px;
     border-radius: 13px;
-    background: #faf9f5;
+    background: #faf8ff;
 }
 
 .admin-dashboard-session-date {
@@ -278,7 +286,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 11px;
-    background: #123c2f;
+    background: #6d28d9;
     color: #fff;
 }
 
@@ -289,7 +297,7 @@
 
 .admin-dashboard-session-date span {
     margin-top: 3px;
-    color: #d8b56a;
+    color: #ddd6fe;
     font-size: 8px;
     font-weight: 800;
     text-transform: uppercase;
@@ -303,7 +311,7 @@
 .admin-dashboard-session-info strong {
     display: block;
     overflow: hidden;
-    color: #35443e;
+    color: #3f374a;
     font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -313,7 +321,7 @@
     display: block;
     margin-top: 3px;
     overflow: hidden;
-    color: #929793;
+    color: #92909a;
     font-size: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -322,20 +330,20 @@
 .admin-dashboard-session-info small {
     display: block;
     margin-top: 3px;
-    color: #a37b30;
+    color: #7c3aed;
     font-size: 9px;
     font-weight: 700;
 }
 
 .admin-dashboard-session-day {
-    color: #929793;
+    color: #92909a;
     font-size: 9px;
     white-space: nowrap;
 }
 
 .admin-dashboard-empty {
     padding: 35px 15px;
-    color: #929793;
+    color: #92909a;
     font-size: 12px;
     text-align: center;
 }
@@ -346,7 +354,7 @@
     gap: 10px;
     align-items: center;
     padding: 20px;
-    border: 1px solid #e8e5dc;
+    border: 1px solid #e9d5ff;
     border-radius: 18px;
     background: #fff;
 }
@@ -354,7 +362,7 @@
 .admin-dashboard-quick-links div span {
     display: block;
     margin-bottom: 5px;
-    color: #a37b30;
+    color: #7c3aed;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 1.2px;
@@ -362,24 +370,30 @@
 
 .admin-dashboard-quick-links div h2 {
     margin: 0;
-    color: #123c2f;
+    color: #4c1d95;
     font-size: 17px;
 }
 
 .admin-dashboard-quick-links a {
     padding: 12px 10px;
     border-radius: 10px;
-    background: #edf2ef;
-    color: #315a4b;
+    background: #f3e8ff;
+    color: #6d28d9;
     font-size: 10px;
     font-weight: 800;
     text-align: center;
     text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.admin-dashboard-quick-links a:hover {
+    background: #ddd6fe;
+    color: #5b21b6;
 }
 
 .admin-dashboard-state {
     padding: 80px 25px;
-    border: 1px solid #e8e5dc;
+    border: 1px solid #e9d5ff;
     border-radius: 22px;
     background: #fff;
     text-align: center;
@@ -387,13 +401,13 @@
 
 .admin-dashboard-state h2 {
     margin: 15px 0 8px;
-    color: #123c2f;
+    color: #4c1d95;
     font-size: 21px;
 }
 
 .admin-dashboard-state p {
     margin: 0;
-    color: #858b87;
+    color: #85808d;
     font-size: 14px;
 }
 
@@ -405,8 +419,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #f3eee2;
-    color: #a37b30;
+    background: #f3e8ff;
+    color: #7c3aed;
     font-size: 22px;
     font-weight: 800;
 }
@@ -415,8 +429,8 @@
     width: 40px;
     height: 40px;
     margin: 0 auto;
-    border: 4px solid #e8e5dc;
-    border-top-color: #123c2f;
+    border: 4px solid #e9d5ff;
+    border-top-color: #6d28d9;
     border-radius: 50%;
     animation: adminDashboardSpin 0.8s linear infinite;
 }

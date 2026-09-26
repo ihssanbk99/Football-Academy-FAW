@@ -58,6 +58,7 @@ export default function DashboardLayout() {
                 icon: '⚽',
             },
             { label: 'Training', path: '/parent/training', icon: '▣' },
+            { label: 'Attendance', path: '/parent/attendance', icon: '✓' },
             { label: 'Tracking', path: '/parent/tracking', icon: '📍' },
             { label: 'Payments', path: '/parent/payments', icon: '$' },
             { label: 'Offers', path: '/parent/offers', icon: '%' },
@@ -90,7 +91,7 @@ export default function DashboardLayout() {
     };
 
     return (
-        <div className="dashboard-layout">
+        <div className={`dashboard-layout dashboard-${role}`}>
             <aside
                 className={`dashboard-sidebar ${
                     sidebarOpen ? 'open' : ''
