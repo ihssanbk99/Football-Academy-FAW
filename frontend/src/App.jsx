@@ -21,6 +21,7 @@ import AdminTracking from './pages/admin/AdminTracking';
 import AdminPayments from './pages/admin/AdminPayments';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminNotifications from './pages/admin/AdminNotifications';
+import AdminAssessments from './pages/admin/AdminAssessments';
 
 import ParentDashboard from './pages/parent/ParentDashboard';
 import ParentPlayers from './pages/parent/ParentPlayers';
@@ -30,6 +31,10 @@ import ParentTracking from './pages/parent/ParentTracking';
 import ParentPayments from './pages/parent/ParentPayments';
 import ParentOffers from './pages/parent/ParentOffers';
 import ParentNotifications from './pages/parent/ParentNotifications';
+import ParentAssessments from './pages/parent/ParentAssessments';
+
+import CoachAttendance from './pages/coach/CoachAttendance';
+import CoachAssessments from './pages/coach/CoachAssessments';
 
 function ProtectedRoute({ children, roles }) {
     const { user, loading } = useAuth();
@@ -43,7 +48,7 @@ function ProtectedRoute({ children, roles }) {
     }
 
     if (roles && !roles.includes(user.role)) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return children;
@@ -78,10 +83,17 @@ function App() {
                     path="transportation"
                     element={<AdminTransportation />}
                 />
-                <Route path="attendance" element={<AdminAttendance />} />
+                <Route
+                    path="attendance"
+                    element={<AdminAttendance />}
+                />
                 <Route path="tracking" element={<AdminTracking />} />
                 <Route path="payments" element={<AdminPayments />} />
                 <Route path="offers" element={<AdminOffers />} />
+                <Route
+                    path="assessments"
+                    element={<AdminAssessments />}
+                />
                 <Route
                     path="notifications"
                     element={<AdminNotifications />}
@@ -102,7 +114,10 @@ function App() {
                     element={<RegisterPlayer />}
                 />
                 <Route path="players" element={<ParentPlayers />} />
-                <Route path="training" element={<ParentTraining />} />
+                <Route
+                    path="training"
+                    element={<ParentTraining />}
+                />
                 <Route
                     path="trial-booking"
                     element={<ParentTrialBooking />}
@@ -111,13 +126,42 @@ function App() {
                 <Route path="payments" element={<ParentPayments />} />
                 <Route path="offers" element={<ParentOffers />} />
                 <Route
+                    path="assessments"
+                    element={<ParentAssessments />}
+                />
+                <Route
                     path="notifications"
                     element={<ParentNotifications />}
                 />
             </Route>
 
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route
+                path="/coach"
+                element={
+                    <ProtectedRoute roles={['coach']}>
+                        <DashboardLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route
+                    path="attendance"
+                    element={<CoachAttendance />}
+                />
+                <Route
+                    path="assessments"
+                    element={<CoachAssessments />}
+                />
+            </Route>
+
+            <Route
+                path="/"
+                element={<Navigate to="/login" replace />}
+            />
+
+            <Route
+                path="*"
+                element={<Navigate to="/login" replace />}
+            />
         </Routes>
     );
 }

@@ -34,6 +34,11 @@ export default function DashboardLayout() {
             { label: 'Payments', path: '/admin/payments', icon: '$' },
             { label: 'Offers', path: '/admin/offers', icon: '%' },
             {
+                label: 'Assessments',
+                path: '/admin/assessments',
+                icon: '★',
+            },
+            {
                 label: 'Notifications',
                 path: '/admin/notifications',
                 icon: '◌',
@@ -57,17 +62,23 @@ export default function DashboardLayout() {
             { label: 'Payments', path: '/parent/payments', icon: '$' },
             { label: 'Offers', path: '/parent/offers', icon: '%' },
             {
+                label: 'Assessments',
+                path: '/parent/assessments',
+                icon: '★',
+            },
+            {
                 label: 'Notifications',
                 path: '/parent/notifications',
                 icon: '◌',
             },
         ],
         coach: [
-            { label: 'Dashboard', path: '/coach/dashboard', icon: '⌂' },
-            { label: 'My Players', path: '/coach/players', icon: '⚽' },
-            { label: 'Training', path: '/coach/training', icon: '▣' },
             { label: 'Attendance', path: '/coach/attendance', icon: '✓' },
-            { label: 'Assessments', path: '/coach/assessments', icon: '★' },
+            {
+                label: 'Assessments',
+                path: '/coach/assessments',
+                icon: '★',
+            },
         ],
     };
 

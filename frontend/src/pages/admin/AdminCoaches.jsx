@@ -6,6 +6,8 @@ const ACADEMY_ID = 1;
 
 const emptyForm = {
     full_name: '',
+    email: '',
+    password: '',
     phone: '',
     specialization: '',
     experience_years: 0,
@@ -63,12 +65,19 @@ function AdminCoaches() {
             const payload = {
                 academy_id: ACADEMY_ID,
                 full_name: form.full_name,
+                email: form.email,
                 phone: form.phone || null,
                 specialization: form.specialization || null,
                 experience_years: Number(form.experience_years) || 0,
                 bio: form.bio || null,
                 is_active: form.is_active,
             };
+
+            if (!editingId) {
+                payload.password = form.password;
+            } else if (form.password) {
+                payload.password = form.password;
+            }
 
             if (editingId) {
                 await api.patch(`/admin/coaches/${editingId}`, payload);
@@ -93,8 +102,11 @@ function AdminCoaches() {
 
     const handleEdit = (coach) => {
         setEditingId(coach.id);
+
         setForm({
             full_name: coach.full_name || '',
+            email: coach.user?.email || '',
+            password: '',
             phone: coach.phone || '',
             specialization: coach.specialization || '',
             experience_years: coach.experience_years ?? 0,
@@ -154,6 +166,7 @@ function AdminCoaches() {
             <div className="admin-coaches-form-card">
                 <div className="admin-coaches-card-header">
                     <h2>{editingId ? 'Edit Coach' : 'Add Coach'}</h2>
+
                     {editingId && (
                         <button
                             type="button"
@@ -175,6 +188,38 @@ function AdminCoaches() {
                                 value={form.full_name}
                                 onChange={handleChange}
                                 required
+                            />
+                        </div>
+
+                        <div className="coach-form-group">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="coach-form-group">
+                            <label>
+                                {editingId
+                                    ? 'New Password (Optional)'
+                                    : 'Password'}
+                            </label>
+                            <input
+                                type="password"
+                                name="password"
+                                value={form.password}
+                                onChange={handleChange}
+                                minLength="8"
+                                required={!editingId}
+                                placeholder={
+                                    editingId
+                                        ? 'Leave empty to keep current password'
+                                        : 'Minimum 8 characters'
+                                }
                             />
                         </div>
 
@@ -242,7 +287,7 @@ function AdminCoaches() {
                             ? 'Saving...'
                             : editingId
                             ? 'Update Coach'
-                            : 'Add Coach'}
+                            : 'Create Coach Account'}
                     </button>
                 </form>
             </div>
@@ -263,6 +308,7 @@ function AdminCoaches() {
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Email</th>
                                     <th>Phone</th>
                                     <th>Specialization</th>
                                     <th>Experience</th>
@@ -270,6 +316,7 @@ function AdminCoaches() {
                                     <th>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 {coaches.map((coach) => (
                                     <tr key={coach.id}>
@@ -277,11 +324,10 @@ function AdminCoaches() {
                                             <div className="coach-name">
                                                 {coach.full_name}
                                             </div>
-                                            {coach.user?.email && (
-                                                <div className="coach-email">
-                                                    {coach.user.email}
-                                                </div>
-                                            )}
+                                        </td>
+
+                                        <td>
+                                            {coach.user?.email || '-'}
                                         </td>
 
                                         <td>{coach.phone || '-'}</td>

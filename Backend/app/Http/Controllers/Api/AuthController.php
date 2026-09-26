@@ -41,11 +41,23 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
+        $user = User::with('coach')->where(
+            'email',
+            $validated['email']
+        )->first();
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        if (
+            $user->role === 'coach' &&
+            (!$user->coach || !$user->coach->is_active)
+        ) {
+            throw ValidationException::withMessages([
+                'email' => ['This coach account is inactive.'],
             ]);
         }
 
