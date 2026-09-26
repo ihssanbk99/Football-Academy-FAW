@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './Auth.css';
+import './Register.css';
 
 export default function Register() {
     const [name, setName] = useState('');
@@ -58,63 +58,26 @@ export default function Register() {
     };
 
     return (
-        <div className="auth-page">
-            <div className="auth-background-shape auth-shape-one"></div>
-            <div className="auth-background-shape auth-shape-two"></div>
+        <div className="register-page">
+            <div className="register-background-shape register-shape-one"></div>
+            <div className="register-background-shape register-shape-two"></div>
 
-            <div className="auth-container register-container">
-                <div className="auth-visual">
-                    <div className="auth-visual-overlay"></div>
-
-                    <div className="auth-visual-content">
-                        <div className="academy-mark">
-                            <span>⚽</span>
-                        </div>
-
-                        <span className="auth-eyebrow">FAW FOOTBALL ACADEMY</span>
-
-                        <h1>
-                            Start Your
-                            <br />
-                            Football Journey.
-                        </h1>
-
-                        <p>
-                            Join the academy community and keep everything
-                            about your player's football journey in one place.
-                        </p>
-
-                        <div className="auth-features">
-                            <div>
-                                <strong>01</strong>
-                                <span>Manage Your Players</span>
-                            </div>
-
-                            <div>
-                                <strong>02</strong>
-                                <span>Follow Training</span>
-                            </div>
-
-                            <div>
-                                <strong>03</strong>
-                                <span>Track Development</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="auth-form-section">
-                    <div className="auth-form-wrapper">
-                        <div className="auth-mobile-logo">
-                            <div className="academy-mark">
+            <div className="register-container">
+                <div className="register-form-section">
+                    <div className="register-form-wrapper">
+                        <div className="register-mobile-logo">
+                            <div className="register-academy-mark">
                                 <span>⚽</span>
                             </div>
+
                             <span>FAW</span>
                         </div>
 
-                        <div className="auth-heading">
+                        <div className="register-heading">
                             <span>GET STARTED</span>
+
                             <h2>Create your account</h2>
+
                             <p>
                                 Create your parent account and start managing
                                 your player's academy journey.
@@ -122,56 +85,66 @@ export default function Register() {
                         </div>
 
                         {error && (
-                            <div className="auth-error">
+                            <div className="register-error">
                                 <span>!</span>
                                 <p>{error}</p>
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="auth-form">
-                            <div className="auth-field">
+                        <form onSubmit={handleSubmit} className="register-form">
+                            <div className="register-field">
                                 <label htmlFor="name">Full Name</label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">◉</span>
+                                <div className="register-input-wrapper">
+                                    <span className="register-input-icon">
+                                        ◉
+                                    </span>
 
                                     <input
                                         id="name"
                                         type="text"
                                         required
                                         value={name}
-                                        onChange={(e) => setName(e.target.value)}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
+                                        }
                                         placeholder="Enter your full name"
                                     />
                                 </div>
                             </div>
 
-                            <div className="auth-field">
+                            <div className="register-field">
                                 <label htmlFor="register-email">
                                     Email Address
                                 </label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">✉</span>
+                                <div className="register-input-wrapper">
+                                    <span className="register-input-icon">
+                                        ✉
+                                    </span>
 
                                     <input
                                         id="register-email"
                                         type="email"
                                         required
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                         placeholder="Enter your email"
                                     />
                                 </div>
                             </div>
 
-                            <div className="auth-field">
+                            <div className="register-field">
                                 <label htmlFor="register-password">
                                     Password
                                 </label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">●</span>
+                                <div className="register-input-wrapper">
+                                    <span className="register-input-icon">
+                                        ●
+                                    </span>
 
                                     <input
                                         id="register-password"
@@ -179,19 +152,23 @@ export default function Register() {
                                         required
                                         minLength={8}
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
                                         placeholder="Minimum 8 characters"
                                     />
                                 </div>
                             </div>
 
-                            <div className="auth-field">
+                            <div className="register-field">
                                 <label htmlFor="password-confirmation">
                                     Confirm Password
                                 </label>
 
-                                <div className="auth-input-wrapper">
-                                    <span className="auth-input-icon">●</span>
+                                <div className="register-input-wrapper">
+                                    <span className="register-input-icon">
+                                        ●
+                                    </span>
 
                                     <input
                                         id="password-confirmation"
@@ -200,18 +177,23 @@ export default function Register() {
                                         minLength={8}
                                         value={passwordConfirmation}
                                         onChange={(e) =>
-                                            setPasswordConfirmation(e.target.value)
+                                            setPasswordConfirmation(
+                                                e.target.value
+                                            )
                                         }
                                         placeholder="Repeat your password"
                                     />
                                 </div>
                             </div>
 
-                            <div className="auth-account-info">
-                                <div className="auth-account-icon">✓</div>
+                            <div className="register-account-info">
+                                <div className="register-account-icon">
+                                    ✓
+                                </div>
 
                                 <div>
                                     <strong>Parent Account</strong>
+
                                     <span>
                                         You can manage your players, training,
                                         payments and academy activities.
@@ -221,7 +203,7 @@ export default function Register() {
 
                             <button
                                 type="submit"
-                                className="auth-submit"
+                                className="register-submit"
                                 disabled={submitting}
                             >
                                 <span>
@@ -231,23 +213,25 @@ export default function Register() {
                                 </span>
 
                                 {!submitting && (
-                                    <span className="auth-arrow">→</span>
+                                    <span className="register-arrow">
+                                        →
+                                    </span>
                                 )}
                             </button>
                         </form>
 
-                        <div className="auth-divider">
+                        <div className="register-divider">
                             <span></span>
                             <p>ALREADY A MEMBER?</p>
                             <span></span>
                         </div>
 
-                        <Link to="/login" className="auth-register">
+                        <Link to="/login" className="register-login">
                             Sign In to Your Account
                             <span>→</span>
                         </Link>
 
-                        <p className="auth-footer">
+                        <p className="register-footer">
                             FAW Football Academy Management System
                         </p>
                     </div>
